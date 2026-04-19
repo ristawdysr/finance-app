@@ -1,27 +1,32 @@
 (function checkAppSession() {
+  const appRoot = document.getElementById("appRoot")
   const localSession = localStorage.getItem("finance_app_session")
   const sessionOnly = sessionStorage.getItem("finance_app_session")
   const userSession = localSession || sessionOnly
   const selectedCompany = localStorage.getItem("finance_app_company")
 
   if (!userSession) {
-    window.location.href = "login.html"
+    window.location.replace("login.html")
     return
   }
 
   if (!selectedCompany) {
-    window.location.href = "login.html"
+    window.location.replace("login.html")
     return
   }
 
   try {
     window.currentUser = JSON.parse(userSession)
     window.selectedCompany = selectedCompany
+
+    if (appRoot) {
+      appRoot.classList.remove("hidden")
+    }
   } catch (err) {
     localStorage.removeItem("finance_app_session")
     sessionStorage.removeItem("finance_app_session")
     localStorage.removeItem("finance_app_company")
-    window.location.href = "login.html"
+    window.location.replace("login.html")
   }
 })()
 
