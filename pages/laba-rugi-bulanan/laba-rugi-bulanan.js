@@ -107,10 +107,10 @@ function renderLabaRugiBulananHead(selectedYear) {
 
   let html = `
     <tr>
-      <th class="w-[140px] min-w-[140px] px-4 py-3 text-left font-semibold whitespace-nowrap border-b border-r border-slate-200 bg-blue-50 sticky left-0 z-30">
+      <th class="w-[140px] min-w-[140px] px-4 py-3 text-left font-semibold whitespace-nowrap border-b border-r border-slate-200 bg-blue-50 lg:sticky lg:left-0 lg:z-30">
         Kode COA
       </th>
-      <th class="w-[260px] min-w-[260px] px-4 py-3 text-left font-semibold whitespace-nowrap border-b border-r border-slate-200 bg-blue-50 sticky left-[140px] z-30">
+      <th class="w-[260px] min-w-[260px] px-4 py-3 text-left font-semibold whitespace-nowrap border-b border-r border-slate-200 bg-blue-50 lg:sticky lg:left-[140px] lg:z-30">
         Keterangan / Nama COA
       </th>
   `

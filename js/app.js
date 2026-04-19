@@ -231,15 +231,31 @@ function renderNotificationDrawerList() {
 function openNotificationDrawer() {
   const drawer = document.getElementById("notifDrawer")
   const overlay = document.getElementById("notifDrawerOverlay")
-  if (drawer) drawer.classList.remove("hidden")
-  if (overlay) overlay.classList.remove("hidden")
+
+  if (drawer) {
+    drawer.classList.remove("hidden")
+    requestAnimationFrame(() => drawer.classList.add("is-open"))
+  }
+
+  if (overlay) {
+    overlay.classList.remove("hidden")
+    requestAnimationFrame(() => overlay.classList.add("is-open"))
+  }
 }
 
 function closeNotificationDrawer() {
   const drawer = document.getElementById("notifDrawer")
   const overlay = document.getElementById("notifDrawerOverlay")
-  if (drawer) drawer.classList.add("hidden")
-  if (overlay) overlay.classList.add("hidden")
+
+  if (drawer) {
+    drawer.classList.remove("is-open")
+    setTimeout(() => drawer.classList.add("hidden"), 260)
+  }
+
+  if (overlay) {
+    overlay.classList.remove("is-open")
+    setTimeout(() => overlay.classList.add("hidden"), 240)
+  }
 }
 
 async function goToNotificationTarget(notification) {
@@ -513,8 +529,15 @@ function closeUserDropdowns() {
   const desktopDropdown = document.getElementById("sidebarUserDropdown")
   const mobileDropdown = document.getElementById("mobileSidebarUserDropdown")
 
-  if (desktopDropdown) desktopDropdown.classList.add("hidden")
-  if (mobileDropdown) mobileDropdown.classList.add("hidden")
+  if (desktopDropdown) {
+    desktopDropdown.classList.remove("is-open")
+    setTimeout(() => desktopDropdown.classList.add("hidden"), 180)
+  }
+
+  if (mobileDropdown) {
+    mobileDropdown.classList.remove("is-open")
+    setTimeout(() => mobileDropdown.classList.add("hidden"), 180)
+  }
 }
 
 function initSidebarUserPanel() {
@@ -559,13 +582,27 @@ function initSidebarUserPanel() {
 
   if (desktopUserButton && desktopDropdown) {
     desktopUserButton.onclick = function () {
-      desktopDropdown.classList.toggle("hidden")
+      const isHidden = desktopDropdown.classList.contains("hidden")
+      if (isHidden) {
+        desktopDropdown.classList.remove("hidden")
+        requestAnimationFrame(() => desktopDropdown.classList.add("is-open"))
+      } else {
+        desktopDropdown.classList.remove("is-open")
+        setTimeout(() => desktopDropdown.classList.add("hidden"), 180)
+      }
     }
   }
 
   if (mobileUserButton && mobileDropdown) {
     mobileUserButton.onclick = function () {
-      mobileDropdown.classList.toggle("hidden")
+      const isHidden = mobileDropdown.classList.contains("hidden")
+      if (isHidden) {
+        mobileDropdown.classList.remove("hidden")
+        requestAnimationFrame(() => mobileDropdown.classList.add("is-open"))
+      } else {
+        mobileDropdown.classList.remove("is-open")
+        setTimeout(() => mobileDropdown.classList.add("hidden"), 180)
+      }
     }
   }
 }
@@ -1255,7 +1292,11 @@ async function loadPage(page) {
 
 function toggleMenu(id) {
   const el = document.getElementById(id)
-  if (el) el.classList.toggle("hidden")
+  if (!el) return
+
+  const isHidden = el.classList.contains("hidden")
+  el.classList.toggle("hidden", !isHidden)
+  el.classList.toggle("submenu-open", isHidden)
 }
 
 function escapeHtml(text) {
@@ -1394,7 +1435,7 @@ async function loadKategoriSidebar() {
 
       html += `
         <li>
-          <div onclick="toggleMenu('${submenuId}')" class="sidebar-category">
+          <div onclick="event.stopPropagation(); toggleMenu('${submenuId}')" class="sidebar-category cursor-pointer select-none">
             <span>${escapeHtml(kategori)}</span>
             <span class="text-blue-100/80 text-xs">▾</span>
           </div>

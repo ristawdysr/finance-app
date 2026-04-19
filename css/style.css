@@ -1394,3 +1394,56 @@ main {
     font-size: 11px;
   }
 }
+
+/* Smooth animation global */
+.smooth-fade {
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+}
+
+.dropdown-animate {
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+  pointer-events: none;
+}
+
+.dropdown-animate.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.dropdown-animate-up {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.dropdown-animate-up.is-open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.drawer-animate {
+  opacity: 0;
+  transform: translateX(18px);
+  pointer-events: none;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.drawer-animate.is-open {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.overlay-animate {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.overlay-animate.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}

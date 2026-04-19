@@ -121,7 +121,7 @@
 
           <div
             id="sidebarUserDropdown"
-            class="mt-3 hidden rounded-2xl border border-white/10 bg-white/10 p-2 backdrop-blur"
+            class="mt-3 hidden dropdown-animate smooth-fade rounded-2xl border border-white/10 bg-white/10 p-2 backdrop-blur"
           >
             <button
               type="button"
@@ -157,7 +157,11 @@
             </button>
           </div>
         </div>
+        </div>
 
+        <div class="px-4 pb-4 text-[11px] text-blue-100/70 text-center">
+          Development by Pedro 2026
+        </div>
       </aside>
 
       <!-- MAIN CONTENT -->
@@ -214,7 +218,7 @@
       <div class="mobile-sidebar-body sidebar-scroll">
         <div id="mobileSidebarMenu"></div>
 
-        <div class="mt-4 border-t border-white/10 pt-4">
+        <div class="mt-4 border-t border-white/10 pt-4 relative">
           <button
             id="mobileSidebarUserButton"
             type="button"
@@ -235,7 +239,7 @@
 
           <div
             id="mobileSidebarUserDropdown"
-            class="mt-3 hidden rounded-2xl border border-white/10 bg-white/10 p-2 backdrop-blur"
+            class="hidden absolute left-0 right-0 bottom-full mb-3 dropdown-animate-up smooth-fade rounded-2xl border border-white/10 bg-slate-900/95 p-2 backdrop-blur shadow-2xl"
           >
             <button
               type="button"
@@ -271,6 +275,10 @@
             </button>
           </div>
         </div>
+        <div class="px-4 pb-4 pt-2 text-[11px] text-blue-100/70 text-center">
+          Development by Pedro 2026
+        </div>
+      </div>
       </div>
     </aside>
 
@@ -395,9 +403,9 @@
       </div>
     </div>
   </div>
-  <div id="notifDrawerOverlay" class="notif-drawer-overlay hidden"></div>
+  <div id="notifDrawerOverlay" class="notif-drawer-overlay overlay-animate hidden"></div>
 
-  <aside id="notifDrawer" class="notif-drawer hidden">
+  <aside id="notifDrawer" class="notif-drawer drawer-animate hidden">
     <div class="notif-drawer-header">
       <div>
         <h3 class="notif-drawer-title">Notifikasi</h3>
