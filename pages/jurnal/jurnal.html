@@ -1,0 +1,140 @@
+<div data-page-has-title="true" class="space-y-6">
+  <div class="space-y-6">
+  <div>
+    <h2 class="text-3xl font-bold text-slate-800">Jurnal Input</h2>
+    <p class="text-slate-500 mt-1">Input transaksi jurnal dengan detail debet dan kredit</p>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+    <!-- FORM -->
+    <div class="xl:col-span-3">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="text-lg font-semibold text-slate-800">Form Input</h3>
+          <span class="text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-medium">
+            Draft
+          </span>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Tanggal</label>
+            <input type="text" id="tanggal" class="input-modern" placeholder="dd/mm/yyyy" inputmode="numeric">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Nama Vendor</label>
+            <select id="vendor">
+              <option value="">Pilih Vendor</option>
+            </select>
+          </div>
+
+          <div class="pt-1 border-t border-slate-200"></div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Kode COA</label>
+            <select id="coa">
+              <option value="">Pilih Kode COA</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Nama COA</label>
+            <input id="nama_coa" class="input-modern bg-slate-50" readonly>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Nominal</label>
+            <input id="nominal" type="text" class="input-modern" placeholder="Masukkan nominal" inputmode="numeric">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Tipe</label>
+            <select id="tipe">
+              <option value="">Pilih Tipe</option>
+              <option value="debet">Debet</option>
+              <option value="kredit">Kredit</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Keterangan</label>
+            <input id="keterangan" class="input-modern" placeholder="Masukkan keterangan">
+          </div>
+
+          <div class="pt-3">
+            <button id="btnAddItem" onclick="addItem()" class="btn-primary w-full">
+              Tambah ke Jurnal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="xl:col-span-9 space-y-6">
+
+      <!-- SUMMARY -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="summary-card summary-card-blue">
+          <div class="summary-label">Total Debet</div>
+          <div id="totalDebet" class="summary-value text-green-700">0</div>
+        </div>
+
+        <div class="summary-card summary-card-red">
+          <div class="summary-label">Total Kredit</div>
+          <div id="totalKredit" class="summary-value text-red-700">0</div>
+        </div>
+
+        <div id="balanceBox" class="summary-card summary-card-gray">
+          <div class="summary-label">Status</div>
+          <div id="statusBalance" class="summary-value text-slate-700">TIDAK BALANCE</div>
+        </div>
+
+        <div class="flex">
+          <button id="btnSave" onclick="saveJurnal()" class="btn-success w-full">
+            Simpan Jurnal
+          </button>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-semibold text-slate-800">Detail Jurnal</h3>
+            <p class="text-sm text-slate-500">Daftar item debet dan kredit yang akan disimpan</p>
+          </div>
+        </div>
+
+        <div class="px-4 pb-4">
+          <div class="table-responsive rounded-xl border border-slate-200">
+            <table class="min-w-full text-sm">
+              
+              <!-- HEADER -->
+              <thead class="bg-gradient-to-r from-blue-50 to-blue-100 text-slate-700">
+                <tr>
+                  <th class="px-4 py-3 text-center font-semibold whitespace-nowrap">Tanggal</th>
+                  <th class="px-4 py-3 text-center font-semibold whitespace-nowrap">Kode COA</th>
+                  <th class="px-4 py-3 text-center font-semibold">Nama COA</th>
+                  <th class="px-4 py-3 text-center font-semibold">Vendor</th>
+                  <th class="px-4 py-3 text-center font-semibold">Keterangan</th>
+                  <th class="px-4 py-3 text-center font-semibold whitespace-nowrap min-w-[130px]">Debet</th>
+                  <th class="px-4 py-3 text-center font-semibold whitespace-nowrap min-w-[130px]">Kredit</th>
+                  <th class="px-4 py-3 text-center font-semibold w-20">Aksi</th>
+                </tr>
+              </thead>
+
+              <!-- BODY -->
+              <tbody id="tableJurnal" class="divide-y divide-slate-200">
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

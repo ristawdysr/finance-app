@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance APP - Login</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen bg-slate-100 font-[Inter]">
+  <div class="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-slate-100 via-blue-50 to-slate-200">
+    <div class="w-full max-w-md rounded-3xl border border-slate-200 bg-white shadow-xl p-8">
+      <div class="text-center mb-8">
+        <div class="mx-auto mb-4 h-16 w-16 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl font-bold">
+          F
+        </div>
+        <h1 class="text-3xl font-extrabold text-slate-800">Finance APP</h1>
+        <p class="mt-2 text-slate-500">Masuk ke sistem keuangan</p>
+      </div>
+
+      <form id="loginForm" class="space-y-5">
+        <div>
+          <label for="loginUsername" class="mb-2 block text-sm font-semibold text-slate-700">
+            Username
+          </label>
+          <input
+            id="loginUsername"
+            type="text"
+            autocomplete="username"
+            placeholder="Masukkan username"
+            class="h-12 w-full rounded-2xl border border-slate-300 px-4 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          />
+        </div>
+
+        <div>
+          <label for="loginPassword" class="mb-2 block text-sm font-semibold text-slate-700">
+            Password
+          </label>
+
+          <div class="relative">
+            <input
+              id="loginPassword"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Masukkan password"
+              class="h-12 w-full rounded-2xl border border-slate-300 px-4 pr-12 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+            />
+
+            <button
+              id="toggleLoginPassword"
+              type="button"
+              class="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-slate-400 hover:text-slate-700"
+              aria-label="Lihat password"
+            >
+              <i data-lucide="eye" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <label class="flex items-center gap-3 text-sm text-slate-600 cursor-pointer">
+          <input
+            id="rememberMe"
+            type="checkbox"
+            class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+          />
+          <span>Ingat saya</span>
+        </label>
+
+        <button
+          id="loginBtn"
+          type="submit"
+          class="h-12 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold transition hover:-translate-y-0.5 hover:shadow-lg"
+        >
+          Login
+        </button>
+      </form>
+
+      <div class="mt-6 text-center">
+        <button
+          id="openRegisterBtn"
+          type="button"
+          class="text-sm font-semibold text-blue-600 hover:text-blue-700"
+        >
+          Belum punya akun? Daftar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTER OVERLAY -->
+  <div
+    id="registerOverlay"
+    class="fixed inset-0 z-50 hidden bg-slate-900/25 backdrop-blur-sm"
+  >
+    <div class="min-h-screen flex items-center justify-center px-4 py-8">
+      <div class="w-full max-w-md rounded-3xl border border-slate-200 bg-white shadow-2xl p-8">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-extrabold text-slate-800">Daftar Akun</h2>
+          <button
+            id="backToLoginBtn"
+            type="button"
+            class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50"
+          >
+            Back
+          </button>
+        </div>
+
+        <form id="registerForm" class="space-y-5">
+          <div>
+            <label for="registerUsername" class="mb-2 block text-sm font-semibold text-slate-700">
+              Username
+            </label>
+            <input
+              id="registerUsername"
+              type="text"
+              placeholder="Masukkan username"
+              class="h-12 w-full rounded-2xl border border-slate-300 px-4 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+            />
+          </div>
+
+          <div>
+            <label for="registerPassword" class="mb-2 block text-sm font-semibold text-slate-700">
+              Password
+            </label>
+
+            <div class="relative">
+              <input
+                id="registerPassword"
+                type="password"
+                placeholder="Masukkan password"
+                class="h-12 w-full rounded-2xl border border-slate-300 px-4 pr-12 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              />
+
+              <button
+                id="toggleRegisterPassword"
+                type="button"
+                class="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-slate-400 hover:text-slate-700"
+                aria-label="Lihat password"
+              >
+                <i data-lucide="eye" class="w-5 h-5"></i>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label for="registerPasswordConfirm" class="mb-2 block text-sm font-semibold text-slate-700">
+              Konfirmasi Password
+            </label>
+
+            <div class="relative">
+              <input
+                id="registerPasswordConfirm"
+                type="password"
+                placeholder="Ulangi password"
+                class="h-12 w-full rounded-2xl border border-slate-300 px-4 pr-12 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              />
+
+              <button
+                id="toggleRegisterPasswordConfirm"
+                type="button"
+                class="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-slate-400 hover:text-slate-700"
+                aria-label="Lihat password"
+              >
+                <i data-lucide="eye" class="w-5 h-5"></i>
+              </button>
+            </div>
+          </div>
+
+          <button
+            id="registerBtn"
+            type="submit"
+            class="h-12 w-full rounded-2xl bg-gradient-to-r from-slate-800 to-slate-900 text-white font-bold transition hover:-translate-y-0.5 hover:shadow-lg"
+          >
+            Kirim Pendaftaran
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPANY PICKER MODAL -->
+  <div
+    id="companyModal"
+    class="fixed inset-0 z-[60] hidden items-center justify-center bg-slate-900/30 backdrop-blur-sm px-4"
+  >
+    <div class="w-full max-w-3xl rounded-3xl bg-white shadow-2xl border border-slate-200 p-6 md:p-8 relative">
+      <button
+        type="button"
+        id="closeCompanyPickerBtn"
+        class="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
+        aria-label="Tutup"
+      >
+        ✕
+      </button>
+
+      <div class="text-center mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold text-slate-800">Pilih Perusahaan</h2>
+        <p class="mt-2 text-sm text-slate-500">
+          Silakan pilih perusahaan untuk masuk
+        </p>
+      </div>
+
+      <div id="masterCompanyActions" class="hidden mb-6">
+        <div class="rounded-2xl border border-blue-200 bg-blue-50 p-4">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+              <div class="font-bold text-slate-800">Akses Master</div>
+              <div class="text-sm text-slate-500">Kelola perusahaan hanya untuk role master</div>
+            </div>
+
+            <div class="flex gap-2">
+              <button
+                id="btnTambahCompany"
+                type="button"
+                class="rounded-2xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+              >
+                Tambah Company
+              </button>
+
+              <button
+                id="btnEditCompany"
+                type="button"
+                class="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                Edit Company
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="companyChoiceList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="col-span-full rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center text-slate-500">
+          Loading perusahaan...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

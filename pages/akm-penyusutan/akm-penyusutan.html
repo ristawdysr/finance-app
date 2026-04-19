@@ -1,0 +1,95 @@
+<div data-page-has-title="true" class="space-y-6">
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-visible">
+    <div class="px-6 py-5 border-b border-slate-200">
+      <div class="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-5">
+        <div>
+          <h3 id="penyusutanPageTitle" class="text-2xl font-bold text-slate-800">
+            Akumulasi Penyusutan
+          </h3>
+          <div class="mt-2">
+            <div id="penyusutanCompanyTitle" class="text-base font-bold text-slate-800">
+              Nama Perusahaan
+            </div>
+            <div id="penyusutanSubtitle" class="text-sm text-slate-500 mt-1">
+              Data Penyusutan Semua Tahun Sampai Nilai Buku Habis
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 w-full xl:w-auto">
+          <div class="w-full xl:w-40">
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Tahun</label>
+            <select id="penyusutanFilterTahun"></select>
+          </div>
+
+          <div class="w-full xl:w-44">
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Tanggal Awal</label>
+            <input id="penyusutanFilterAwal" type="text" class="input-modern" placeholder="dd/mm/yyyy">
+          </div>
+
+          <div class="w-full xl:w-44">
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Tanggal Akhir</label>
+            <input id="penyusutanFilterAkhir" type="text" class="input-modern" placeholder="dd/mm/yyyy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
+      <button
+        id="penyusutanToggleFormBtn"
+        type="button"
+        class="btn-primary inline-flex items-center gap-2 px-5"
+      >
+        <span id="penyusutanToggleFormLabel">Input Aset Baru</span>
+      </button>
+    </div>
+
+    <div id="penyusutanFormWrapper" class="hidden px-6 py-5 border-b border-slate-200 bg-slate-50">
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-4">
+        <div class="xl:col-span-2">
+          <label class="block mb-2 text-sm font-semibold text-slate-700">Keterangan</label>
+          <input id="penyusutanKeterangan" class="input-modern" placeholder="Contoh: Aset Penyusutan">
+        </div>
+
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-slate-700">Jumlah / Unit</label>
+          <input id="penyusutanJumlah" type="number" min="1" class="input-modern" placeholder="0">
+        </div>
+
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-slate-700">Tarif (%)</label>
+          <input id="penyusutanTarif" type="number" min="0" step="0.01" class="input-modern" placeholder="0">
+        </div>
+
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-slate-700">Masa Manfaat</label>
+          <input id="penyusutanMasaManfaat" type="number" min="1" class="input-modern" placeholder="0">
+        </div>
+
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-slate-700">Tanggal Perolehan</label>
+          <input id="penyusutanTanggalPerolehan" type="text" class="input-modern" placeholder="dd/mm/yyyy">
+        </div>
+
+        <div class="xl:col-span-2">
+          <label class="block mb-2 text-sm font-semibold text-slate-700">Harga Perolehan</label>
+          <input id="penyusutanHargaPerolehan" class="input-modern" placeholder="Rp 0">
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 mt-5">
+        <button id="penyusutanResetBtn" type="button" class="btn-warning px-5">Reset</button>
+        <button id="penyusutanSubmitBtn" type="button" class="btn-primary px-5">Simpan Aset</button>
+      </div>
+    </div>
+
+    <div class="p-4">
+      <div id="penyusutanTableWrapper" class="space-y-6">
+        <div class="rounded-xl border border-slate-200 bg-white">
+          <div class="px-4 py-6 text-center text-slate-400">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

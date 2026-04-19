@@ -1,0 +1,38 @@
+<div data-page-has-title="true" class="space-y-6">
+  <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+    <div>
+      <h2 class="text-3xl font-bold text-slate-800">Neraca Bulanan</h2>
+      <p class="text-slate-500 mt-1">
+        Laporan neraca 12 bulan berdasarkan saldo awal dan transaksi jurnal
+      </p>
+    </div>
+
+    <div class="w-full md:w-52">
+      <label class="block mb-2 text-sm font-semibold text-slate-700">Tahun</label>
+      <select id="neracaTahun"></select>
+    </div>
+  </div>
+
+  <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+    <div class="px-5 py-4 border-b border-slate-200">
+      <h3 class="text-lg font-semibold text-slate-800">Laporan Neraca</h3>
+      <p class="text-sm text-slate-500 mt-1">
+        Opening Januari diambil dari Master Saldo Awal, lalu bergulir sampai Desember
+      </p>
+    </div>
+
+    <div class="p-4">
+      <div class="overflow-auto rounded-xl border border-slate-200">
+        <table class="min-w-max text-sm text-slate-700 border-separate border-spacing-0">
+          <thead id="neracaTableHead" class="bg-gradient-to-r from-blue-50 to-blue-100 text-slate-700">
+          </thead>
+          <tbody id="neracaTableBody" class="divide-y divide-slate-200">
+            <tr>
+              <td colspan="51" class="text-center text-slate-400 py-6">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

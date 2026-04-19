@@ -1,0 +1,91 @@
+<div data-page-has-title="true" class="space-y-6">
+  <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 no-print">
+    <div>
+      <h2 class="text-3xl font-bold text-slate-800">Laba Rugi Tahunan</h2>
+      <p class="text-slate-500 mt-1">
+        Laporan laba rugi tahunan siap print
+      </p>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-3">
+      <div class="w-full md:w-48">
+        <label class="block mb-2 text-sm font-semibold text-slate-700">Tahun</label>
+        <select id="lrTahunanTahun"></select>
+      </div>
+
+      <div class="relative mb-4 no-print">
+        <button
+            id="lrTahunanExportBtn"
+            type="button"
+            class="btn-primary px-4 flex items-center gap-2"
+            onclick="event.stopPropagation(); toggleLRTahunanExportMenu()"
+        >
+            <span>Export</span>
+            <span class="text-sm">▾</span>
+        </button>
+
+        <div
+            id="lrTahunanExportMenu"
+            class="hidden absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden z-50"
+        >
+            <button
+            type="button"
+            class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"
+            onclick="event.stopPropagation(); handleLRTahunanExport('print')"
+            >
+            Print
+            </button>
+
+            <button
+            type="button"
+            class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"
+            onclick="event.stopPropagation(); handleLRTahunanExport('pdf')"
+            >
+            PDF
+            </button>
+
+            <button
+            type="button"
+            class="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"
+            onclick="event.stopPropagation(); handleLRTahunanExport('xlsx')"
+            >
+            XLSX
+            </button>
+        </div>
+        </div>
+    </div>
+  </div>
+
+  <div id="lrTahunanPrintArea" class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden print:overflow-visible print:shadow-none print:border-0 print:rounded-none">
+    <div class="p-8 print:p-0">
+      <div class="text-center mb-6">
+        <h1 id="lrCompanyName" class="text-2xl font-bold text-slate-900">Nama Perusahaan</h1>
+
+        <div class="mt-3 inline-block bg-blue-700 text-white font-bold px-6 py-2 rounded-md">
+          Laporan Laba Rugi
+        </div>
+
+        <p id="lrTahunanPeriode" class="mt-3 text-slate-700">
+          Untuk tahun yang berakhir 31 Desember 2026
+        </p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-slate-800">
+          <thead>
+            <tr class="border-b border-slate-300">
+              <th class="py-3 text-left font-semibold">Keterangan</th>
+              <th class="py-3 text-right font-semibold w-[240px]">Nominal (Rp)</th>
+            </tr>
+          </thead>
+
+          <tbody id="lrTahunanBody">
+            <tr>
+              <td colspan="2" class="py-6 text-center text-slate-400">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

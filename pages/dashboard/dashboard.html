@@ -1,0 +1,146 @@
+<div data-page-has-title="true" class="space-y-6">
+  <div class="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-4">
+    <div>
+      <h2 class="text-3xl font-bold text-slate-800">Dashboard</h2>
+      <p class="text-slate-500 mt-1">
+        Ringkasan transaksi, posisi akun, dan rekap per COA
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 w-full xl:w-auto">
+      <div class="w-full md:w-48">
+        <label class="block mb-2 text-sm font-semibold text-slate-700">Tahun</label>
+        <select id="dashboardTahun"></select>
+      </div>
+
+      <div class="w-full md:w-48">
+        <label class="block mb-2 text-sm font-semibold text-slate-700">Tanggal Awal</label>
+        <input
+          id="dashboardTanggalAwal"
+          type="text"
+          class="input-modern"
+          placeholder="dd/mm/yyyy"
+        >
+      </div>
+
+      <div class="w-full md:w-48">
+        <label class="block mb-2 text-sm font-semibold text-slate-700">Tanggal Akhir</label>
+        <input
+          id="dashboardTanggalAkhir"
+          type="text"
+          class="input-modern"
+          placeholder="dd/mm/yyyy"
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD UTAMA -->
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+      <div class="text-sm text-slate-500">Total Transaksi</div>
+      <div id="dashTotalTransaksi" class="text-3xl font-bold text-slate-800 mt-2">0</div>
+      <div id="dashCompareTransaksi" class="text-sm mt-2 text-slate-500">-</div>
+    </div>
+
+    <div class="bg-green-50 rounded-2xl shadow-sm border border-green-200 p-5">
+      <div class="text-sm text-green-700">Total Debet</div>
+      <div id="dashTotalDebet" class="text-3xl font-bold text-green-700 mt-2">Rp 0</div>
+      <div id="dashCompareDebet" class="text-sm mt-2 text-slate-500">-</div>
+    </div>
+
+    <div class="bg-red-50 rounded-2xl shadow-sm border border-red-200 p-5">
+      <div class="text-sm text-red-700">Total Kredit</div>
+      <div id="dashTotalKredit" class="text-3xl font-bold text-red-700 mt-2">Rp 0</div>
+      <div id="dashCompareKredit" class="text-sm mt-2 text-slate-500">-</div>
+    </div>
+
+    <div class="bg-blue-50 rounded-2xl shadow-sm border border-blue-200 p-5">
+      <div class="text-sm text-blue-700">NET</div>
+      <div id="dashNet" class="text-3xl font-bold text-blue-700 mt-2">Rp 0</div>
+      <div class="text-sm mt-2 text-slate-500">Debet - Kredit</div>
+    </div>
+  </div>
+
+  <!-- CARD POSISI AKUN -->
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+      <div class="text-sm text-slate-500">Aset Lancar</div>
+      <div id="dashAsetLancar" class="text-2xl font-bold text-slate-800 mt-2">Rp 0</div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+      <div class="text-sm text-slate-500">Aset Tetap</div>
+      <div id="dashAsetTetap" class="text-2xl font-bold text-slate-800 mt-2">Rp 0</div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+      <div class="text-sm text-slate-500">Kewajiban Lancar</div>
+      <div id="dashKewajibanLancar" class="text-2xl font-bold text-slate-800 mt-2">Rp 0</div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+      <div class="text-sm text-slate-500">Ekuitas</div>
+      <div id="dashEkuitas" class="text-2xl font-bold text-slate-800 mt-2">Rp 0</div>
+    </div>
+  </div>
+
+  <!-- GRAFIK -->
+  <div class="grid grid-cols-1 gap-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="px-5 py-4 border-b border-slate-200">
+        <h3 class="text-lg font-semibold text-slate-800">Tren Pendapatan & Beban</h3>
+        <p class="text-sm text-slate-500 mt-1">
+          Grafik pendapatan dan beban per bulan sesuai filter periode
+        </p>
+      </div>
+      <div class="p-5">
+        <div class="h-[320px]">
+          <canvas id="dashboardProfitLossChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABEL TOTAL COA -->
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="px-5 py-4 border-b border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <div>
+        <h3 class="text-lg font-semibold text-slate-800">Total per COA</h3>
+        <p class="text-sm text-slate-500 mt-1">Rekap total debet dan kredit per akun</p>
+      </div>
+
+      <div class="w-full md:w-72">
+        <input
+          id="dashboardSearch"
+          type="text"
+          placeholder="Cari kode / nama akun"
+          class="input-modern"
+        >
+      </div>
+    </div>
+
+    <div class="p-4">
+      <div class="table-responsive rounded-xl border border-slate-200">
+        <table class="min-w-full text-sm text-slate-700">
+          <thead class="bg-slate-100 text-slate-700">
+            <tr>
+              <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">Kode COA</th>
+              <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">Nama COA</th>
+              <th class="px-4 py-3 text-right font-semibold whitespace-nowrap">Total Debet</th>
+              <th class="px-4 py-3 text-right font-semibold whitespace-nowrap">Total Kredit</th>
+              <th class="px-4 py-3 text-right font-semibold whitespace-nowrap">NET</th>
+            </tr>
+          </thead>
+          <tbody id="dashboardCoaTable" class="divide-y divide-slate-200">
+            <tr>
+              <td colspan="5" class="px-4 py-6 text-center text-slate-400">
+                Loading...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

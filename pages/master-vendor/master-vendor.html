@@ -1,0 +1,97 @@
+<div data-page-has-title="true" class="space-y-6">
+  <div>
+    <h2 class="text-3xl font-bold text-slate-800">Master Vendor</h2>
+    <p class="text-slate-500 mt-1">Kelola data vendor dan import data dari Excel</p>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+    <div class="flex items-center justify-between mb-5">
+      <h3 class="text-lg font-semibold text-slate-800">Form Master Vendor</h3>
+      <span class="text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-medium">
+        Data Vendor
+      </span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block mb-2 text-sm font-semibold text-slate-700">Nama Vendor</label>
+        <input id="nama_vendor" placeholder="Masukkan nama vendor" class="input-modern">
+      </div>
+
+      <div>
+        <label class="block mb-2 text-sm font-semibold text-slate-700">Kontak</label>
+        <input id="kontak" placeholder="Masukkan kontak vendor" class="input-modern">
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-semibold text-slate-700 mb-2">Deskripsi</label>
+      <textarea
+        id="deskripsi"
+        class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+        placeholder="Masukkan deskripsi vendor"
+      ></textarea>
+    </div>
+
+    <div class="flex flex-wrap gap-3 mt-6">
+      <button onclick="saveVendor()" class="btn-primary px-5">
+        Simpan
+      </button>
+
+      <button onclick="triggerUploadVendor()" class="h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 transition">
+        Upload dari Excel
+      </button>
+
+      <input type="file" id="uploadVendor" accept=".xlsx,.xls" class="hidden">
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="px-5 py-4 border-b border-slate-200 sticky top-0 z-20 bg-white/95 backdrop-blur">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div>
+          <h3 class="text-lg font-semibold text-slate-800">Daftar Master Vendor</h3>
+          <p class="text-sm text-slate-500 mt-1">Data vendor yang tersimpan di sistem</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <span id="vendorSelectedCounter" class="hidden px-3 h-10 rounded-xl bg-blue-50 text-blue-700 font-semibold text-sm items-center">
+            0 dipilih
+          </span>
+
+          <button id="vendorSelectAllBtn" type="button" class="px-4 h-10 rounded-xl border border-slate-300 bg-white text-slate-700 font-semibold hover:bg-slate-50">
+            Pilih Semua
+          </button>
+
+          <button id="vendorDeleteSelectedBtn" type="button" class="hidden px-4 h-10 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700">
+            Hapus Terpilih
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4">
+      <div class="table-responsive rounded-xl border border-slate-200">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gradient-to-r from-blue-50 to-blue-100 text-slate-700">
+            <tr>
+              <th class="px-4 py-3 text-left font-semibold whitespace-nowrap w-[22%]">Nama Vendor</th>
+              <th class="px-4 py-3 text-left font-semibold whitespace-nowrap w-[16%]">Kontak</th>
+              <th class="px-4 py-3 text-left font-semibold whitespace-nowrap w-[34%]">Deskripsi</th>
+              <th class="px-4 py-3 text-left font-semibold whitespace-nowrap w-[16%]">Created</th>
+              <th class="px-4 py-3 text-center font-semibold whitespace-nowrap w-[12%]">Aksi</th>
+              <th class="px-4 py-3 text-center font-semibold whitespace-nowrap w-[6%]">
+                <input id="vendorCheckAll" type="checkbox">
+              </th>
+            </tr>
+          </thead>
+          <tbody id="vendorTable" class="divide-y divide-slate-200">
+            <tr>
+              <td colspan="6" class="text-center text-slate-400 py-6">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
