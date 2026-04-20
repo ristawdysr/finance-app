@@ -1488,3 +1488,57 @@ main {
 .mobile-topbar-left {
   display: none;
 }
+
+#notifDrawerOverlay {
+  z-index: 9998;
+}
+
+#notifDrawer {
+  z-index: 9999;
+}
+
+.swal2-container {
+  z-index: 20000 !important;
+}
+
+.swal2-popup {
+  z-index: 20001 !important;
+}
+
+#page-title-wrap {
+  min-height: 60px;
+  justify-content: flex-end;
+}
+
+.mobile-topbar {
+  justify-content: flex-end;
+}
+
+.mobile-topbar-left {
+  display: none !important;
+}
+
+.company-choice[disabled],
+.company-choice[data-active-company="true"] {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+#mobileAppBrandName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 767px) {
+  #page-title-wrap {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .mobile-topbar {
+    display: none !important;
+  }
+}

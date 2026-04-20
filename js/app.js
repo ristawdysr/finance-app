@@ -53,8 +53,14 @@ function updateAppBrand() {
   const companyName = getActiveCompanyName()
 
   const brandEl = document.getElementById("appBrandName")
+  const mobileBrandEl = document.getElementById("mobileAppBrandName")
+
   if (brandEl) {
     brandEl.innerText = companyName
+  }
+
+  if (mobileBrandEl) {
+    mobileBrandEl.innerText = companyName
   }
 
   document.title = `${companyName} - Finance App`
@@ -447,6 +453,7 @@ async function renderCompanyChoicesInApp() {
   }
 
   const rows = data || []
+  const activeCompanyId = getActiveCompanyId()
 
   if (!rows.length) {
     listEl.innerHTML = `
@@ -457,17 +464,35 @@ async function renderCompanyChoicesInApp() {
     return
   }
 
-  listEl.innerHTML = rows.map(row => `
-    <button
-      type="button"
-      class="company-choice rounded-3xl border border-slate-200 bg-slate-50 p-6 text-left hover:border-blue-300 hover:bg-blue-50 transition"
-      data-company-id="${row.company_id}"
-      data-company-name="${row.company_name}"
-    >
-      <div class="text-lg font-bold text-slate-800">${row.company_name}</div>
-      <div class="mt-2 text-sm text-slate-500">${row.company_description || "-"}</div>
-    </button>
-  `).join("")
+  listEl.innerHTML = rows.map(row => {
+    const isActive = String(row.company_id) === String(activeCompanyId)
+
+    return `
+      <button
+        type="button"
+        class="company-choice rounded-3xl border p-6 text-left transition ${
+          isActive
+            ? "border-blue-300 bg-blue-50 opacity-75 cursor-not-allowed"
+            : "border-slate-200 bg-slate-50 hover:border-blue-300 hover:bg-blue-50"
+        }"
+        data-company-id="${row.company_id}"
+        data-company-name="${row.company_name}"
+        ${isActive ? 'data-active-company="true" disabled' : ""}
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="text-lg font-bold text-slate-800">${row.company_name}</div>
+            <div class="mt-2 text-sm text-slate-500">${row.company_description || "-"}</div>
+          </div>
+          ${
+            isActive
+              ? `<span class="shrink-0 rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">Aktif</span>`
+              : ""
+          }
+        </div>
+      </button>
+    `
+  }).join("")
 
   bindAppCompanyButtons()
 }
@@ -1042,19 +1067,6 @@ async function openCompanyPickerAgain() {
   picker.classList.add("flex")
 }
 
-function initCompanyPickerClose() {
-  const btn = document.getElementById("closeCompanyPickerBtn")
-  const modal = document.getElementById("companyModal")
-
-  if (!btn || !modal) return
-
-  btn.onclick = () => {
-    modal.classList.add("hidden")
-    modal.classList.remove("flex")
-  }
-}
-
-
 function openChangePasswordModal() {
   closeUserDropdowns()
   const modal = document.getElementById("changePasswordModal")
@@ -1210,7 +1222,7 @@ function updatePageTitle(page) {
   if (!titleWrap) return
 
   titleWrap.classList.remove("hidden")
-  titleWrap.classList.add("md:flex")
+  titleWrap.classList.add("md:flex", "justify-end")
 }
 
 async function fetchPageHtml(page) {
@@ -1688,19 +1700,19 @@ function handleMenuClick(page, el = null) {
   loadPage(page)
 }
 
-function initCompanyPickerClose() {
-  const btn = document.getElementById("closeCompanyPickerBtn")
-  const picker = document.getElementById("companyPicker")
-
-  if (!btn || !picker) return
-
-  btn.onclick = () => {
-    picker.classList.add("hidden")
-  }
-}
-
 function bindAppCompanyButtons() {
+  const activeCompanyId = getActiveCompanyId()
+
   document.querySelectorAll("#companyChoiceList .company-choice").forEach(btn => {
+    const companyId = btn.getAttribute("data-company-id") || ""
+    const isActive = String(companyId) === String(activeCompanyId)
+
+    if (isActive) {
+      btn.onclick = null
+      btn.style.pointerEvents = "none"
+      return
+    }
+
     btn.onclick = async function () {
       const companyId = this.getAttribute("data-company-id") || ""
       const companyName = this.getAttribute("data-company-name") || ""
