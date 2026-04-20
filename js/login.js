@@ -112,6 +112,14 @@
       }
     })
   }
+  
+  function showLoginLoader() {
+    document.getElementById("login-loader")?.classList.add("is-active")
+  }
+
+  function hideLoginLoader() {
+    document.getElementById("login-loader")?.classList.remove("is-active")
+  }  
 
   async function handleLogin(event) {
     event.preventDefault()
@@ -128,6 +136,7 @@
 
     loginBtn.disabled = true
     loginBtn.innerText = "Memproses..."
+    showLoginLoader()
 
     try {
       const { data, error } = await supabaseClient.rpc("login_app_user", {
@@ -140,14 +149,17 @@
       const user = Array.isArray(data) ? data[0] : null
 
       if (!user) {
+        hideLoginLoader()
         Swal.fire("Login gagal", "Username / password salah atau akun belum disetujui", "error")
         return
       }
 
       saveSession(user, rememberMe, password)
+      hideLoginLoader()
       await openCompanyModal()
     } catch (err) {
       console.error("LOGIN ERROR:", err)
+      hideLoginLoader()
       Swal.fire("Error", err.message || "Gagal login", "error")
     } finally {
       loginBtn.disabled = false

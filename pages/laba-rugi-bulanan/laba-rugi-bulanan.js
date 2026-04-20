@@ -255,10 +255,10 @@ function renderAccountRows(rows, visibleMonths) {
 
     html += `
       <tr class="${rowBg} hover:bg-blue-50 transition">
-        <td class="w-[140px] min-w-[140px] px-4 py-3 whitespace-nowrap sticky left-0 ${rowBg} z-20 border-r border-slate-200">
+        <td class="w-[140px] min-w-[140px] px-4 py-3 whitespace-nowrap lg:sticky lg:left-0 ${rowBg} lg:z-20 border-r border-slate-200">
           ${escapeHtml(row.kode_akun)}
         </td>
-        <td class="w-[260px] min-w-[260px] px-4 py-3 whitespace-nowrap sticky left-[140px] ${rowBg} z-20 border-r border-slate-200">
+        <td class="w-[260px] min-w-[260px] px-4 py-3 whitespace-nowrap lg:sticky lg:left-[140px] ${rowBg} lg:z-20 border-r border-slate-200">
           ${escapeHtml(row.nama_akun)}
         </td>
     `

@@ -1447,3 +1447,36 @@ main {
   opacity: 1;
   pointer-events: auto;
 }
+
+#appRoot {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+main {
+  min-width: 0;
+  min-height: 0;
+}
+
+#content {
+  min-width: 0;
+  min-height: 0;
+}
+
+.notif-action-btn.danger {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.notif-action-btn.danger:hover {
+  background: #fecaca;
+}
+
+@media (max-width: 1023px) {
+  .table-responsive .sticky {
+    position: static !important;
+    left: auto !important;
+    z-index: auto !important;
+  }
+}

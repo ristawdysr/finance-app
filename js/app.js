@@ -143,6 +143,39 @@ async function toggleNotificationStar(notificationId) {
   renderNotificationDrawerList()
 }
 
+async function deleteNotification(notificationId) {
+  const row = notificationRows.find(x => String(x.id) === String(notificationId))
+  if (!row) return
+
+  const result = await Swal.fire({
+    title: "Hapus notifikasi?",
+    text: "Notifikasi ini akan dihapus permanen.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya, hapus",
+    cancelButtonText: "Batal",
+    reverseButtons: true,
+    confirmButtonColor: "#dc2626",
+    cancelButtonColor: "#94a3b8"
+  })
+
+  if (!result.isConfirmed) return
+
+  const { error } = await supabaseClient
+    .from("app_notifications")
+    .delete()
+    .eq("id", notificationId)
+
+  if (error) {
+    Swal.fire("Error", error.message || "Gagal hapus notifikasi", "error")
+    return
+  }
+
+  notificationRows = notificationRows.filter(x => String(x.id) !== String(notificationId))
+  renderNotificationDrawerList()
+  await loadNotificationCount()
+}
+
 function filterNotificationRows() {
   let rows = [...notificationRows]
 
@@ -222,6 +255,12 @@ function renderNotificationDrawerList() {
                 >Tandai dibaca</button>`
               : ""
           }
+
+          <button
+            type="button"
+            class="notif-action-btn danger"
+            onclick="handleNotificationDelete('${row.id}')"
+          >Hapus</button>
         </div>
       </div>
     `
@@ -302,6 +341,10 @@ window.handleNotificationReadOnly = async function(notificationId) {
   await markNotificationAsRead(notificationId)
   renderNotificationDrawerList()
   await loadNotificationCount()
+}
+
+window.handleNotificationDelete = async function(notificationId) {
+  await deleteNotification(notificationId)
 }
 
 window.handleNotificationOpen = async function(notificationId) {
@@ -580,15 +623,14 @@ function initSidebarUserPanel() {
   const mobileUserButton = document.getElementById("mobileSidebarUserButton")
   const mobileDropdown = document.getElementById("mobileSidebarUserDropdown")
 
-  if (desktopUserButton && desktopDropdown) {
-    desktopUserButton.onclick = function () {
-      const isHidden = desktopDropdown.classList.contains("hidden")
+  if (mobileUserButton && mobileDropdown) {
+    mobileUserButton.onclick = function () {
+      const isHidden = mobileDropdown.classList.contains("hidden")
+
       if (isHidden) {
-        desktopDropdown.classList.remove("hidden")
-        requestAnimationFrame(() => desktopDropdown.classList.add("is-open"))
+        mobileDropdown.classList.remove("hidden")
       } else {
-        desktopDropdown.classList.remove("is-open")
-        setTimeout(() => desktopDropdown.classList.add("hidden"), 180)
+        mobileDropdown.classList.add("hidden")
       }
     }
   }
@@ -1124,12 +1166,12 @@ function buildStaticSidebarMenu(isMobile = false) {
   `
 }
 
-function setKategoriMenuHtml(html) {
+function setKategoriMenuHtml(desktopHtml, mobileHtml = desktopHtml) {
   const desktopMenu = document.getElementById("kategori-menu")
   const mobileMenu = document.getElementById("kategori-menu-mobile")
 
-  if (desktopMenu) desktopMenu.innerHTML = html
-  if (mobileMenu) mobileMenu.innerHTML = html
+  if (desktopMenu) desktopMenu.innerHTML = desktopHtml
+  if (mobileMenu) mobileMenu.innerHTML = mobileHtml
 }
 
 async function animateContentOut() {
@@ -1423,47 +1465,62 @@ async function loadKategoriSidebar() {
     const kategoriList = Object.keys(grouped)
 
     if (!kategoriList.length) {
-      setKategoriMenuHtml(`<li class="text-sm text-gray-200 px-2 py-1">Belum ada kategori</li>`)
+      setKategoriMenuHtml(
+        `<li class="text-sm text-gray-200 px-2 py-1">Belum ada kategori</li>`,
+        `<li class="text-sm text-gray-200 px-2 py-1">Belum ada kategori</li>`
+      )
       return
     }
 
-    let html = ""
+    const desktopHtml = buildKategoriMenuHtml(grouped, false)
+    const mobileHtml = buildKategoriMenuHtml(grouped, true)
 
-    kategoriList.forEach((kategori, index) => {
-      const submenuId = `kategori-${slugify(kategori)}-${index}`
-      const akunList = grouped[kategori]
+    setKategoriMenuHtml(desktopHtml, mobileHtml)
 
-      html += `
-        <li>
-          <div onclick="event.stopPropagation(); toggleMenu('${submenuId}')" class="sidebar-category cursor-pointer select-none">
-            <span>${escapeHtml(kategori)}</span>
-            <span class="text-blue-100/80 text-xs">▾</span>
-          </div>
-
-          <ul id="${submenuId}" class="sidebar-submenu hidden space-y-1">
-            ${
-              akunList.length
-                ? akunList.map(akun => `
-                    <li
-                      onclick="openMenuKategori(this, '${escapeJsString(akun.kode_akun)}', '${escapeJsString(akun.nama_akun)}', '${escapeJsString(kategori)}', '${submenuId}')"
-                      class="menu text-sm"
-                      data-kode-coa="${escapeHtml(akun.kode_akun)}"
-                    >
-                      ${escapeHtml(akun.nama_akun)}
-                    </li>
-                  `).join("")
-                : `<li class="text-sm text-blue-100/80 px-3 py-2">Belum ada akun</li>`
-            }
-          </ul>
-        </li>
-      `
-    })
-
-    setKategoriMenuHtml(html)
   } catch (err) {
     console.error("LOAD KATEGORI SIDEBAR ERROR:", err)
     setKategoriMenuHtml(`<li class="text-sm text-red-200 px-2 py-1">Error kategori</li>`)
   }
+}
+
+function buildKategoriMenuHtml(grouped, isMobile = false) {
+  const prefix = isMobile ? "mobile" : "desktop"
+  let html = ""
+
+  Object.keys(grouped).forEach((kategori, index) => {
+    const submenuId = `${prefix}-kategori-${slugify(kategori)}-${index}`
+    const akunList = grouped[kategori]
+
+    html += `
+      <li>
+        <div
+          onclick="event.stopPropagation(); toggleMenu('${submenuId}')"
+          class="sidebar-category cursor-pointer select-none"
+        >
+          <span>${escapeHtml(kategori)}</span>
+          <span class="text-blue-100/80 text-xs">▾</span>
+        </div>
+
+        <ul id="${submenuId}" class="sidebar-submenu hidden space-y-1">
+          ${
+            akunList.length
+              ? akunList.map(akun => `
+                  <li
+                    onclick="openMenuKategori(this, '${escapeJsString(akun.kode_akun)}', '${escapeJsString(akun.nama_akun)}', '${escapeJsString(kategori)}', '${submenuId}')"
+                    class="menu text-sm"
+                    data-kode-coa="${escapeHtml(akun.kode_akun)}"
+                  >
+                    ${escapeHtml(akun.nama_akun)}
+                  </li>
+                `).join("")
+              : `<li class="text-sm text-blue-100/80 px-3 py-2">Belum ada akun</li>`
+          }
+        </ul>
+      </li>
+    `
+  })
+
+  return html
 }
 
 async function openMenuKategori(el, kodeCoa, namaAkun, kategori, submenuId) {
