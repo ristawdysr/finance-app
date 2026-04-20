@@ -1480,3 +1480,11 @@ main {
     z-index: auto !important;
   }
 }
+
+.mobile-topbar {
+  justify-content: flex-end;
+}
+
+.mobile-topbar-left {
+  display: none;
+}

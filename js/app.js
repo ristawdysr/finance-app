@@ -241,7 +241,7 @@ function renderNotificationDrawerList() {
               ? `<button
                   type="button"
                   class="notif-action-btn primary"
-                  onclick="handleNotificationOpen('${row.id}')"
+                  onclick="event.stopPropagation(); handleNotificationOpen('${row.id}')"
                 >${isRead ? "Buka Lagi" : "Buka"}</button>`
               : ""
           }
@@ -251,7 +251,7 @@ function renderNotificationDrawerList() {
               ? `<button
                   type="button"
                   class="notif-action-btn"
-                  onclick="handleNotificationReadOnly('${row.id}')"
+                  onclick="event.stopPropagation(); handleNotificationReadOnly('${row.id}')"
                 >Tandai dibaca</button>`
               : ""
           }
@@ -259,8 +259,10 @@ function renderNotificationDrawerList() {
           <button
             type="button"
             class="notif-action-btn danger"
-            onclick="handleNotificationDelete('${row.id}')"
-          >Hapus</button>
+            onclick="event.stopPropagation(); handleNotificationDelete('${row.id}')"
+          >
+            Hapus
+          </button>
         </div>
       </div>
     `
@@ -573,13 +575,13 @@ function closeUserDropdowns() {
   const mobileDropdown = document.getElementById("mobileSidebarUserDropdown")
 
   if (desktopDropdown) {
+    desktopDropdown.classList.add("hidden")
     desktopDropdown.classList.remove("is-open")
-    setTimeout(() => desktopDropdown.classList.add("hidden"), 180)
   }
 
   if (mobileDropdown) {
+    mobileDropdown.classList.add("hidden")
     mobileDropdown.classList.remove("is-open")
-    setTimeout(() => mobileDropdown.classList.add("hidden"), 180)
   }
 }
 
@@ -623,27 +625,32 @@ function initSidebarUserPanel() {
   const mobileUserButton = document.getElementById("mobileSidebarUserButton")
   const mobileDropdown = document.getElementById("mobileSidebarUserDropdown")
 
-  if (mobileUserButton && mobileDropdown) {
-    mobileUserButton.onclick = function () {
-      const isHidden = mobileDropdown.classList.contains("hidden")
+  // DESKTOP
+  if (desktopUserButton && desktopDropdown) {
+    desktopUserButton.onclick = function (e) {
+      e.stopPropagation()
+
+      const isHidden = desktopDropdown.classList.contains("hidden")
+
+      closeUserDropdowns()
 
       if (isHidden) {
-        mobileDropdown.classList.remove("hidden")
-      } else {
-        mobileDropdown.classList.add("hidden")
+        desktopDropdown.classList.remove("hidden")
       }
     }
   }
 
+  // MOBILE
   if (mobileUserButton && mobileDropdown) {
-    mobileUserButton.onclick = function () {
+    mobileUserButton.onclick = function (e) {
+      e.stopPropagation()
+
       const isHidden = mobileDropdown.classList.contains("hidden")
+
+      closeUserDropdowns()
+
       if (isHidden) {
         mobileDropdown.classList.remove("hidden")
-        requestAnimationFrame(() => mobileDropdown.classList.add("is-open"))
-      } else {
-        mobileDropdown.classList.remove("is-open")
-        setTimeout(() => mobileDropdown.classList.add("hidden"), 180)
       }
     }
   }
@@ -1016,6 +1023,11 @@ async function getCompanyOptionsHtml() {
 
 async function openCompanyPickerAgain() {
   closeUserDropdowns()
+
+  if (typeof window.closeMobileSidebar === "function") {
+    window.closeMobileSidebar()
+  }
+
   localStorage.removeItem("finance_app_company")
   localStorage.removeItem("activeCompanyId")
   localStorage.removeItem("activeCompanyName")
@@ -1028,12 +1040,6 @@ async function openCompanyPickerAgain() {
 
   picker.classList.remove("hidden")
   picker.classList.add("flex")
-
-  const desktopDropdown = document.getElementById("sidebarUserDropdown")
-  const mobileDropdown = document.getElementById("mobileSidebarUserDropdown")
-
-  if (desktopDropdown) desktopDropdown.classList.add("hidden")
-  if (mobileDropdown) mobileDropdown.classList.add("hidden")
 }
 
 function initCompanyPickerClose() {
@@ -1200,46 +1206,11 @@ function animateContentIn() {
 }
 
 function updatePageTitle(page) {
-  const titleMap = {
-    dashboard: "Dashboard",
-    jurnal: "Jurnal Input",
-    "general-ledger": "General Ledger",
-    "master-coa": "Master COA",
-    "master-vendor": "Master Vendor",
-    "saldo-awal": "Saldo Awal",
-    "neraca-bulanan": "Neraca Bulanan",
-    "laba-rugi-bulanan": "Laba Rugi Bulanan",
-    "laba-rugi-tahunan": "Laba Rugi Tahunan",
-    "menu-kategori": "Data Jurnal",
-    "neraca-tahunan": "Neraca Tahunan",
-    "akm-penyusutan": localStorage.getItem("menuLabel") || "Akumulasi Penyusutan",
-    "akm-penyusutan-inventaris": "Akm. Peny. Inventaris Kantor",
-    "akm-penyusutan-kendaraan": "Akm. Peny. Kendaraan",
-    "manage-akun": "Manage Akun"
-  }
-
-  const titleEl = document.getElementById("title")
   const titleWrap = document.getElementById("page-title-wrap")
-  const mobileTitleEl = document.getElementById("mobilePageTitle")
+  if (!titleWrap) return
 
-  if (!titleEl || !titleWrap) return
-
-  const pageHasOwnTitle = !!document.querySelector('#content [data-page-has-title="true"]')
-  const text = pageHasOwnTitle ? "" : (titleMap[page] || page)
-  const visibleText = titleMap[page] || page
-
-  titleEl.innerText = text
-
-  if (text) {
-    titleWrap.classList.remove("hidden")
-    titleWrap.classList.add("md:flex")
-  } else {
-    titleWrap.classList.add("hidden")
-  }
-
-  if (mobileTitleEl) {
-    mobileTitleEl.innerText = visibleText
-  }
+  titleWrap.classList.remove("hidden")
+  titleWrap.classList.add("md:flex")
 }
 
 async function fetchPageHtml(page) {
