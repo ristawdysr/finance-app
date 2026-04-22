@@ -1566,6 +1566,11 @@ main {
 }
 
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 2mm 6mm 4mm 6mm;
+  }
+
   html,
   body {
     margin: 0 !important;
@@ -1575,20 +1580,8 @@ main {
     print-color-adjust: exact;
   }
 
-  .no-print {
-    display: none !important;
-  }
-
   body * {
     visibility: hidden !important;
-  }
-
-  /* =========================
-     LABA RUGI TAHUNAN
-  ========================= */
-  html:has(#lrTahunanPrintArea) @page {
-    size: A4 portrait;
-    margin: 2mm 6mm 4mm 6mm;
   }
 
   #lrTahunanPrintArea,
@@ -1665,100 +1658,11 @@ main {
     break-inside: avoid !important;
   }
 
-  /* =========================
-     NERACA TAHUNAN
-  ========================= */
-  html:has(#neracaTahunanPrintArea) @page {
-    size: A4 landscape;
-    margin: 6mm;
-  }
-
-  #neracaTahunanPrintArea,
-  #neracaTahunanPrintArea * {
-    visibility: visible !important;
-  }
-
-  #neracaTahunanPrintArea {
-    position: static !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #fff !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-  }
-
-  #neracaTahunanPrintArea .p-8 {
-    padding: 0 !important;
-  }
-
-  #neracaTahunanPrintArea .text-center,
-  #neracaTahunanPrintArea .text-center.mb-8 {
-    margin: 0 0 10px 0 !important;
-    padding: 0 !important;
-  }
-
-  #neracaTahunanPrintArea h1 {
-    font-size: 22px !important;
-    line-height: 1.15 !important;
-    margin: 0 !important;
-    text-align: center !important;
-  }
-
-  #neracaTahunanPrintArea .inline-block {
-    margin-top: 6px !important;
-    padding: 6px 20px !important;
-    font-size: 14px !important;
-    line-height: 1.1 !important;
-  }
-
-  #neracaTahunanPrintArea p {
-    margin: 6px 0 0 0 !important;
-    font-size: 14px !important;
-    line-height: 1.2 !important;
-    text-align: center !important;
-  }
-
-  #neracaTahunanPrintArea .overflow-x-auto {
-    overflow: visible !important;
-  }
-
-  #neracaTahunanGrid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 28px !important;
-    align-items: start !important;
-  }
-
-  #neracaTahunanPrintArea table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    table-layout: fixed !important;
-    margin-top: 0 !important;
-  }
-
-  #neracaTahunanPrintArea td,
-  #neracaTahunanPrintArea th {
-    font-size: 12px !important;
-    line-height: 1.25 !important;
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
-    vertical-align: top !important;
-  }
-
-  #neracaTahunanPrintArea tr {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
+  .no-print {
+    display: none !important;
   }
 }
 
-/* =========================
-   PDF EXPORT - LABA RUGI
-========================= */
 #lrTahunanPrintArea.pdf-export-mode {
   width: 190mm !important;
   min-width: 0 !important;
@@ -1829,80 +1733,6 @@ main {
 }
 
 #lrTahunanPrintArea.pdf-export-mode tr {
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
-}
-
-/* =========================
-   PDF EXPORT - NERACA
-========================= */
-#neracaTahunanPrintArea.pdf-export-mode {
-  width: 277mm !important;
-  min-width: 0 !important;
-  max-width: 277mm !important;
-  margin: 0 auto !important;
-  padding: 0 !important;
-  background: #fff !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-}
-
-#neracaTahunanPrintArea.pdf-export-mode .p-8 {
-  padding: 0 !important;
-}
-
-#neracaTahunanPrintArea.pdf-export-mode .text-center,
-#neracaTahunanPrintArea.pdf-export-mode .text-center.mb-8 {
-  margin: 0 0 10px 0 !important;
-  padding: 0 !important;
-}
-
-#neracaTahunanPrintArea.pdf-export-mode h1 {
-  font-size: 22px !important;
-  line-height: 1.15 !important;
-  margin: 0 !important;
-  text-align: center !important;
-}
-
-#neracaTahunanPrintArea.pdf-export-mode .inline-block {
-  margin-top: 6px !important;
-  padding: 6px 20px !important;
-  font-size: 14px !important;
-  line-height: 1.1 !important;
-}
-
-#neracaTahunanPrintArea.pdf-export-mode p {
-  margin: 6px 0 0 0 !important;
-  font-size: 14px !important;
-  line-height: 1.2 !important;
-  text-align: center !important;
-}
-
-#neracaTahunanPrintArea.pdf-export-mode #neracaTahunanGrid {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 28px !important;
-  align-items: start !important;
-}
-
-#neracaTahunanPrintArea.pdf-export-mode table {
-  width: 100% !important;
-  border-collapse: collapse !important;
-  table-layout: fixed !important;
-}
-
-#neracaTahunanPrintArea.pdf-export-mode td,
-#neracaTahunanPrintArea.pdf-export-mode th {
-  font-size: 12px !important;
-  line-height: 1.2 !important;
-  padding-top: 2px !important;
-  padding-bottom: 2px !important;
-  vertical-align: top !important;
-}
-
-#neracaTahunanPrintArea.pdf-export-mode tr {
   page-break-inside: avoid !important;
   break-inside: avoid !important;
 }
