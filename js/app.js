@@ -488,52 +488,23 @@ async function renderCompanyChoicesInApp() {
   bindAppCompanyButtons()
 }
 
-function triggerBellNudge() {
+function triggerBellAnimation(type = "soft") {
   const desktopBell = document.getElementById("notificationBellBtn")
   const mobileBell = document.getElementById("mobileNotificationBellBtn")
 
+  const className = type === "loud" ? "bell-ring-loud" : "bell-ring-soft"
+  const removeClasses = ["bell-ring-soft", "bell-ring-loud"]
+
   if (desktopBell) {
-    desktopBell.classList.remove("bell-nudge")
+    desktopBell.classList.remove(...removeClasses)
     void desktopBell.offsetWidth
-    desktopBell.classList.add("bell-nudge")
+    desktopBell.classList.add(className)
   }
 
   if (mobileBell) {
-    mobileBell.classList.remove("bell-nudge")
+    mobileBell.classList.remove(...removeClasses)
     void mobileBell.offsetWidth
-    mobileBell.classList.add("bell-nudge")
-  }
-}
-
-function updateBellNudgeLoop(unreadCount) {
-  if (bellNudgeInterval) {
-    clearInterval(bellNudgeInterval)
-    bellNudgeInterval = null
-  }
-
-  if (Number(unreadCount || 0) > 0) {
-    triggerBellNudge()
-
-    bellNudgeInterval = setInterval(() => {
-      triggerBellNudge()
-    }, 10000)
-  }
-}
-
-function triggerBellNudge() {
-  const desktopBell = document.getElementById("notificationBellBtn")
-  const mobileBell = document.getElementById("mobileNotificationBellBtn")
-
-  if (desktopBell) {
-    desktopBell.classList.remove("bell-nudge", "bell-pop")
-    void desktopBell.offsetWidth
-    desktopBell.classList.add("bell-nudge", "bell-pop")
-  }
-
-  if (mobileBell) {
-    mobileBell.classList.remove("bell-nudge", "bell-pop")
-    void mobileBell.offsetWidth
-    mobileBell.classList.add("bell-nudge", "bell-pop")
+    mobileBell.classList.add(className)
   }
 }
 
@@ -545,7 +516,7 @@ function updateBellNudgeLoop(unreadCount) {
 
   if (Number(unreadCount || 0) > 0) {
     bellNudgeInterval = setInterval(() => {
-      triggerBellNudge()
+      triggerBellAnimation("soft")
     }, 6000)
   }
 }
@@ -559,7 +530,7 @@ function startNotificationPolling() {
   if (!canSeeBell()) return
 
   notificationPollingInterval = setInterval(() => {
-    loadNotificationCount(false)
+    loadNotificationCount(true)
   }, 5000)
 }
 
@@ -624,7 +595,7 @@ async function loadNotificationCount(shouldAnimateNew = true) {
   updateBellNudgeLoop(finalCount)
 
   if (shouldAnimateNew && hasNewNotification) {
-    triggerBellNudge()
+    triggerBellAnimation("loud")
   }
 
   lastUnreadNotificationCount = finalCount
