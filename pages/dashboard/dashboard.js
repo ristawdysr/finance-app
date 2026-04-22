@@ -205,19 +205,9 @@ function initDashboardDateFilters() {
       dateFormat: "d/m/Y",
       allowInput: true,
       disableMobile: true,
-      monthSelectorType: "static",
-      showMonths: 1,
+      appendTo: document.body,
+      position: "auto left",
       defaultDate: startEl.value || null,
-      prevArrow: `
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m15 18-6-6 6-6"/>
-        </svg>
-      `,
-      nextArrow: `
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m9 18 6-6-6-6"/>
-        </svg>
-      `,
       onChange: function(selectedDates, dateStr) {
         const dbDate = toDbDate(dateStr)
         if (dbDate) {
@@ -238,6 +228,8 @@ function initDashboardDateFilters() {
       dateFormat: "d/m/Y",
       allowInput: true,
       disableMobile: true,
+      appendTo: document.body,
+      position: "auto right",
       defaultDate: endEl.value || null,
       onChange: function(selectedDates, dateStr) {
         const dbDate = toDbDate(dateStr)

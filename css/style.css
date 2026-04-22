@@ -1736,3 +1736,13 @@ main {
   page-break-inside: avoid !important;
   break-inside: avoid !important;
 }
+
+.flatpickr-current-month input.cur-year {
+  width: 64px !important;
+  min-width: 64px !important;
+  padding-left: 4px !important;
+}
+
+.flatpickr-current-month .numInputWrapper {
+  width: 64px !important;
+}
