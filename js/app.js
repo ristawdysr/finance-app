@@ -34,6 +34,8 @@ let notificationRows = []
 let notificationFilter = "all"
 let notificationSearch = ""
 let bellNudgeInterval = null
+let notificationPollingInterval = null
+let lastUnreadNotificationCount = 0
 
 function formatNotificationTime(value) {
   if (!value) return "-"
@@ -518,7 +520,50 @@ function updateBellNudgeLoop(unreadCount) {
   }
 }
 
-async function loadNotificationCount() {
+function triggerBellNudge() {
+  const desktopBell = document.getElementById("notificationBellBtn")
+  const mobileBell = document.getElementById("mobileNotificationBellBtn")
+
+  if (desktopBell) {
+    desktopBell.classList.remove("bell-nudge", "bell-pop")
+    void desktopBell.offsetWidth
+    desktopBell.classList.add("bell-nudge", "bell-pop")
+  }
+
+  if (mobileBell) {
+    mobileBell.classList.remove("bell-nudge", "bell-pop")
+    void mobileBell.offsetWidth
+    mobileBell.classList.add("bell-nudge", "bell-pop")
+  }
+}
+
+function updateBellNudgeLoop(unreadCount) {
+  if (bellNudgeInterval) {
+    clearInterval(bellNudgeInterval)
+    bellNudgeInterval = null
+  }
+
+  if (Number(unreadCount || 0) > 0) {
+    bellNudgeInterval = setInterval(() => {
+      triggerBellNudge()
+    }, 6000)
+  }
+}
+
+function startNotificationPolling() {
+  if (notificationPollingInterval) {
+    clearInterval(notificationPollingInterval)
+    notificationPollingInterval = null
+  }
+
+  if (!canSeeBell()) return
+
+  notificationPollingInterval = setInterval(() => {
+    loadNotificationCount(false)
+  }, 5000)
+}
+
+async function loadNotificationCount(shouldAnimateNew = true) {
   if (!canSeeBell()) return
 
   const session = getSessionUser()
@@ -554,6 +599,7 @@ async function loadNotificationCount() {
   }
 
   const finalCount = count || 0
+  const hasNewNotification = finalCount > lastUnreadNotificationCount
 
   if (badge) {
     if (finalCount > 0) {
@@ -576,6 +622,12 @@ async function loadNotificationCount() {
   }
 
   updateBellNudgeLoop(finalCount)
+
+  if (shouldAnimateNew && hasNewNotification) {
+    triggerBellNudge()
+  }
+
+  lastUnreadNotificationCount = finalCount
 
   if (window.lucide) {
     lucide.createIcons()
@@ -1628,6 +1680,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     console.error("SIDEBAR INIT ERROR:", err)
   })
   await loadNotificationCount()
+  startNotificationPolling()
 })
 
 function clearSidebarActive() {

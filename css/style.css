@@ -1817,3 +1817,25 @@ main {
 #mobileNotificationBellBtn.bell-nudge {
   animation: bellNudge 0.6s ease;
 }
+
+@keyframes bellPop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#notificationBellBtn,
+#mobileNotificationBellBtn {
+  transform-origin: center;
+}
+
+#notificationBellBtn.bell-pop,
+#mobileNotificationBellBtn.bell-pop {
+  animation: bellPop 0.28s ease;
+}
