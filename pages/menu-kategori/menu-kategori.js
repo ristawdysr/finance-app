@@ -210,7 +210,9 @@ function initMenuKategoriFilters(tahun) {
       dateFormat: "d/m/Y",
       allowInput: true,
       disableMobile: true,
-      defaultDate: null,
+      appendTo: document.body,
+      position: "auto left",
+      defaultDate: awalEl.value || null,
       onChange: () => loadMenuKategoriData()
     })
   }
@@ -225,7 +227,9 @@ function initMenuKategoriFilters(tahun) {
       dateFormat: "d/m/Y",
       allowInput: true,
       disableMobile: true,
-      defaultDate: null,
+      appendTo: document.body,
+      position: "auto right",
+      defaultDate: akhirEl.value || null,
       onChange: () => loadMenuKategoriData()
     })
   }
