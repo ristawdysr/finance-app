@@ -452,14 +452,12 @@ async function renderCompanyChoicesInApp() {
     return
   }
 
-  const rows = data || []
   const activeCompanyId = getActiveCompanyId()
-
-  const filteredRows = rows.filter(row => 
-    String(row.company_id) !== String(activeCompanyId)
+  const rows = (data || []).filter(
+    row => String(row.company_id) !== String(activeCompanyId)
   )
 
-  if (!filteredRows.length) {
+  if (!rows.length) {
     listEl.innerHTML = `
       <div class="col-span-full rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center text-slate-500">
         Tidak ada perusahaan lain
@@ -468,24 +466,21 @@ async function renderCompanyChoicesInApp() {
     return
   }
 
-  listEl.innerHTML = filteredRows.map(row => {
-    return `
-      <button
-        type="button"
-        class="company-choice rounded-3xl border p-6 text-left transition
-          border-slate-200 bg-slate-50 hover:border-blue-300 hover:bg-blue-50"
-        data-company-id="${row.company_id}"
-        data-company-name="${row.company_name}"
-      >
-        <div class="flex items-start justify-between gap-3">
-          <div class="min-w-0">
-            <div class="text-lg font-bold text-slate-800">${row.company_name}</div>
-            <div class="mt-2 text-sm text-slate-500">${row.company_description || "-"}</div>
-          </div>
+  listEl.innerHTML = rows.map(row => `
+    <button
+      type="button"
+      class="company-choice rounded-3xl border border-slate-200 bg-slate-50 p-6 text-left transition hover:border-blue-300 hover:bg-blue-50"
+      data-company-id="${row.company_id}"
+      data-company-name="${row.company_name}"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <div class="text-lg font-bold text-slate-800">${row.company_name}</div>
+          <div class="mt-2 text-sm text-slate-500">${row.company_description || "-"}</div>
         </div>
-      </button>
-    `
-  }).join("")
+      </div>
+    </button>
+  `).join("")
 
   bindAppCompanyButtons()
 }
@@ -1694,18 +1689,8 @@ function handleMenuClick(page, el = null) {
 }
 
 function bindAppCompanyButtons() {
-  const activeCompanyId = getActiveCompanyId()
-
   document.querySelectorAll("#companyChoiceList .company-choice").forEach(btn => {
     const companyId = btn.getAttribute("data-company-id") || ""
-    const isActive = String(companyId) === String(activeCompanyId)
-
-    if (isActive) {
-      btn.onclick = null
-      btn.style.pointerEvents = "none"
-      return
-    }
-
     btn.onclick = async function () {
       const companyId = this.getAttribute("data-company-id") || ""
       const companyName = this.getAttribute("data-company-name") || ""
