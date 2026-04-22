@@ -25,7 +25,9 @@
 
     try {
       const user = JSON.parse(raw)
-      return String(user.role || "").toLowerCase() === "master"
+      const role = String(user.role || "").toLowerCase()
+
+      return role === "master" || role === "superuser"
     } catch {
       return false
     }
@@ -69,6 +71,21 @@
         </option>
       `)
       .join("")
+  }
+
+  function updateGeneralLedgerSelectionVisibility() {
+    const head = document.getElementById("glCheckAllHead")
+    const checkAll = document.getElementById("glCheckAll")
+
+    const canManage = canManageGeneralLedger()
+
+    if (head) {
+      head.classList.toggle("hidden", !canManage)
+    }
+
+    if (checkAll) {
+      checkAll.checked = false
+    }
   }
 
   function initGeneralLedgerYearSelect() {
@@ -327,7 +344,7 @@
     if (!companyId) {
       table.innerHTML = `
         <tr>
-          <td colspan="9" class="px-4 py-6 text-center text-red-500">
+          <td colspan=10" class="px-4 py-6 text-center text-red-500">
             Company belum dipilih
           </td>
         </tr>
@@ -338,7 +355,7 @@
 
     table.innerHTML = `
       <tr>
-        <td colspan="9" class="px-4 py-6 text-center text-slate-400">
+        <td colspan="10" class="px-4 py-6 text-center text-slate-400">
           Loading...
         </td>
       </tr>
@@ -357,7 +374,7 @@
       console.error("GENERAL LEDGER ERROR:", error)
       table.innerHTML = `
         <tr>
-          <td colspan="9" class="px-4 py-6 text-center text-red-500">
+          <td colspan="10" class="px-4 py-6 text-center text-red-500">
             ${escapeHtml(error.message)}
           </td>
         </tr>
@@ -372,6 +389,7 @@
     updateDeleteSelectedVisibility()
     updateGeneralLedgerBulkCounter()
     updateGeneralLedgerBulkBar()
+    updateGeneralLedgerSelectionVisibility()
 
     if (!rows.length) {
       table.innerHTML = `
