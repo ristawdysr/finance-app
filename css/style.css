@@ -1752,3 +1752,49 @@ main {
 .flatpickr-calendar {
   z-index: 99999 !important;
 }
+
+#saldoAwalTahun.ts-hidden-accessible {
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+#saldoAwalTahun + .ts-wrapper {
+  width: 100%;
+}
+
+#saldoAwalTahun + .ts-wrapper .ts-control {
+  min-height: 46px;
+  height: 46px;
+  border: 1px solid #cfd8e3 !important;
+  border-radius: 14px !important;
+  padding: 0 14px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+}
+
+#saldoAwalTahun + .ts-wrapper.focus .ts-control {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.10) !important;
+}
+
+#saldoAwalTahun + .ts-wrapper .ts-control input {
+  display: none !important;
+}
+
+#saldoAwalTahun + .ts-wrapper .item {
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+#saldoAwalTahun + .ts-wrapper .ts-dropdown {
+  z-index: 99999 !important;
+  border: 1px solid #dbe2ea !important;
+  border-radius: 14px !important;
+  margin-top: 6px !important;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12) !important;
+  overflow: hidden;
+}
