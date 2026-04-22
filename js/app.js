@@ -254,24 +254,6 @@ function renderNotificationDrawerList() {
                 >${isRead ? "Buka Lagi" : "Buka"}</button>`
               : ""
           }
-
-          ${
-            !isRead
-              ? `<button
-                  type="button"
-                  class="notif-action-btn"
-                  onclick="event.stopPropagation(); handleNotificationReadOnly('${row.id}')"
-                >Tandai dibaca</button>`
-              : ""
-          }
-
-          <button
-            type="button"
-            class="notif-action-btn danger"
-            onclick="event.stopPropagation(); handleNotificationDelete('${row.id}')"
-          >
-            Hapus
-          </button>
         </div>
       </div>
     `

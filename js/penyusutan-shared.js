@@ -388,7 +388,7 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
               <thead class="bg-slate-100 text-slate-700">
                 <tr>
                   <th class="px-4 py-3 text-center font-semibold whitespace-nowrap">No</th>
-                  <th class="px-4 py-3 text-center font-semibold whitespace-nowrap">Aksi</th>
+                  ${canManagePenyusutan() ? `<th class="px-4 py-3 text-center font-semibold whitespace-nowrap">Aksi</th>` : ""}
                   <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">Keterangan</th>
                   <th class="px-4 py-3 text-right font-semibold whitespace-nowrap">Jumlah / Unit</th>
                   <th class="px-4 py-3 text-right font-semibold whitespace-nowrap">Tarif / Tahun</th>
@@ -417,6 +417,7 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
         html += `
           <tr class="${index % 2 === 0 ? "bg-white" : "bg-slate-50"} hover:bg-blue-50 transition">
             <td class="px-4 py-3 text-center whitespace-nowrap">${index + 1}</td>
+            ${canManagePenyusutan() ? `
             <td class="px-4 py-3 text-center whitespace-nowrap">
               <div class="flex items-center justify-center gap-3">
                 <button
@@ -438,6 +439,7 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
                 </button>
               </div>
             </td>
+            ` : ""}
             <td class="px-4 py-3 whitespace-nowrap font-semibold">${escapeHtml(row.keterangan)}</td>
             <td class="px-4 py-3 text-right whitespace-nowrap">${new Intl.NumberFormat("id-ID").format(row.jumlah_unit)}</td>
             <td class="px-4 py-3 text-right whitespace-nowrap">${formatPercent(row.tarif_tahun_pct)}</td>
@@ -456,7 +458,7 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
               </tbody>
               <tfoot>
                 <tr class="bg-slate-100 border-t border-slate-200 font-semibold">
-                  <td colspan="7" class="px-4 py-3 text-right">Jumlah</td>
+                  <td colspan="${canManagePenyusutan() ? 7 : 6}" class="px-4 py-3 text-right">Jumlah</td>
                   <td class="px-4 py-3 text-right whitespace-nowrap">${formatCurrency(subtotal.harga_perolehan)}</td>
                   ${MONTHS.map(m => `<td class="px-4 py-3 text-right whitespace-nowrap">${formatCurrency(subtotal[m.key])}</td>`).join("")}
                   <td class="px-4 py-3 text-right whitespace-nowrap">${formatCurrency(subtotal.total_depresiasi)}</td>
@@ -474,6 +476,40 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
 
     if (window.lucide) {
       lucide.createIcons()
+    }
+  }
+
+  function getCurrentRole() {
+    const raw =
+      localStorage.getItem("finance_app_session") ||
+      sessionStorage.getItem("finance_app_session")
+
+    if (!raw) return ""
+
+    try {
+      return String(JSON.parse(raw).role || "").toLowerCase()
+    } catch {
+      return ""
+    }
+  }
+
+  function canManagePenyusutan() {
+    const role = getCurrentRole()
+    return role === "master" || role === "superuser" || role === "editor"
+  }
+
+  function applyPenyusutanAccess() {
+    const canManage = canManagePenyusutan()
+
+    const toggleBtn = el("toggleFormBtn")
+    const formWrapper = el("formWrapper")
+
+    if (toggleBtn) {
+      toggleBtn.classList.toggle("hidden", !canManage)
+    }
+
+    if (!canManage && formWrapper) {
+      formWrapper.classList.add("hidden")
     }
   }
 
@@ -524,6 +560,10 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
   }
 
   async function saveData() {
+    if (!canManagePenyusutan()) {
+      Swal.fire("Akses ditolak", "Viewer tidak boleh input atau mengubah aset", "error")
+      return
+}
     const payload = getFormPayload()
     const errorText = validatePayload(payload)
 
@@ -563,6 +603,11 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
   }
 
   async function loadForEdit(id) {
+
+    if (!canManagePenyusutan()) {
+      Swal.fire("Akses ditolak", "Viewer tidak boleh mengedit aset", "error")
+      return
+    }
     const { data, error } = await supabaseClient
       .from("aset_penyusutan")
       .select("*")
@@ -592,6 +637,10 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
   }
 
   async function removeData(id) {
+    if (!canManagePenyusutan()) {
+      Swal.fire("Akses ditolak", "Viewer tidak boleh menghapus aset", "error")
+      return
+    }
     const confirmDelete = await Swal.fire({
       title: "Hapus data ini?",
       text: "Data aset akan dihapus permanen.",
@@ -692,6 +741,7 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
     initCollapse()
     bindEvents()
     setSubtitle()
+    applyPenyusutanAccess()
     await loadData()
   }
 }
