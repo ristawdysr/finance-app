@@ -1650,4 +1650,9 @@ main {
   .no-print {
     display: none !important;
   }
+
+  #lrTahunanPrintArea .p-8 {
+    padding-top: 0 !important;
+    padding-bottom: 4px !important;
+  }
 }
