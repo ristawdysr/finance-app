@@ -235,6 +235,12 @@
     async function createUser(event) {
       event.preventDefault()
 
+      const session = getSession()
+      if (!session?.id) {
+        Swal.fire("Session habis", "Silakan login kembali", "warning")
+        return
+      }
+
       const username = String(document.getElementById("newUsername")?.value || "").trim()
       const password = String(document.getElementById("newPassword")?.value || "").trim()
       const role = String(document.getElementById("newRole")?.value || "viewer")
@@ -306,6 +312,12 @@
     }
 
     async function saveUserChanges(userId) {
+      const session = getSession()
+      if (!session?.id) {
+        Swal.fire("Session habis", "Silakan login kembali", "warning")
+        return
+      }
+
       const role = document.getElementById(`role-${userId}`)?.value || "viewer"
       const status = document.getElementById(`status-${userId}`)?.value || "active"
       const password = document.getElementById(`password-${userId}`)?.value || ""
