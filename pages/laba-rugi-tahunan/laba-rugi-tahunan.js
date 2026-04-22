@@ -40,23 +40,71 @@ function formatCurrencyCell(num) {
   return formatCurrency(value)
 }
 
-function exportPDF() {
+async function exportPDF() {
   if (typeof html2pdf === "undefined") {
     Swal.fire("Error", "Library PDF belum dimuat", "error")
     return
   }
 
-  const element = document.getElementById("lrTahunanPrintArea")
-
-  const opt = {
-    margin: 10,
-    filename: "Laba-Rugi-Tahunan.pdf",
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+  const source = document.getElementById("lrTahunanPrintArea")
+  if (!source) {
+    Swal.fire("Error", "Area PDF tidak ditemukan", "error")
+    return
   }
 
-  html2pdf().set(opt).from(element).save()
+  const wrapper = document.createElement("div")
+  wrapper.style.position = "fixed"
+  wrapper.style.left = "-99999px"
+  wrapper.style.top = "0"
+  wrapper.style.width = "210mm"
+  wrapper.style.background = "#fff"
+  wrapper.style.zIndex = "-1"
+
+  const clone = source.cloneNode(true)
+  clone.classList.add("pdf-export-mode")
+  clone.style.width = "190mm"
+  clone.style.minWidth = "0"
+  clone.style.maxWidth = "190mm"
+  clone.style.margin = "0 auto"
+  clone.style.background = "#fff"
+  clone.style.border = "0"
+  clone.style.borderRadius = "0"
+  clone.style.boxShadow = "none"
+  clone.style.overflow = "visible"
+
+  wrapper.appendChild(clone)
+  document.body.appendChild(wrapper)
+
+  const opt = {
+    margin: [4, 6, 6, 6],
+    filename: "Laba-Rugi-Tahunan.pdf",
+    pagebreak: { mode: ["avoid-all", "css"] },
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollX: 0,
+      scrollY: 0
+    },
+    jsPDF: {
+      unit: "mm",
+      format: "a4",
+      orientation: "portrait",
+      compressPDF: true
+    }
+  }
+
+  try {
+    await html2pdf().set(opt).from(clone).save()
+  } catch (err) {
+    console.error("EXPORT PDF ERROR:", err)
+    Swal.fire("Error", "Gagal export PDF", "error")
+  } finally {
+    wrapper.remove()
+  }
 }
+
 function exportExcel() {
   const table = document.querySelector("#lrTahunanPrintArea table")
 
