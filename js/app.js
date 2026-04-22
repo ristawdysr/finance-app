@@ -1042,10 +1042,6 @@ async function openCompanyPickerAgain() {
     window.closeMobileSidebar()
   }
 
-  localStorage.removeItem("finance_app_company")
-  localStorage.removeItem("activeCompanyId")
-  localStorage.removeItem("activeCompanyName")
-
   const picker = document.getElementById("companyModal")
   if (!picker) return
 
