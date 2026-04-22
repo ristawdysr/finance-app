@@ -1746,3 +1746,45 @@ main {
 .flatpickr-current-month .numInputWrapper {
   width: 64px !important;
 }
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  border: 1px solid transparent;
+  background: transparent;
+  color: #3f3f46;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 2px 22px 2px 8px;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months:hover {
+  background: #f4f4f5;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months:focus {
+  background: #f4f4f5;
+  border-color: #d4d4d8;
+}
+
+.flatpickr-current-month {
+  position: relative;
+}
+
+.flatpickr-current-month::after {
+  content: "";
+  position: absolute;
+  right: 52px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #71717a;
+  border-bottom: 2px solid #71717a;
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+}

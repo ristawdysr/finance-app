@@ -207,6 +207,7 @@ function initDashboardDateFilters() {
       disableMobile: true,
       appendTo: document.body,
       position: "auto left",
+      monthSelectorType: "static",
       defaultDate: startEl.value || null,
       onChange: function(selectedDates, dateStr) {
         const dbDate = toDbDate(dateStr)
@@ -230,6 +231,7 @@ function initDashboardDateFilters() {
       disableMobile: true,
       appendTo: document.body,
       position: "auto right",
+      monthSelectorType: "static",
       defaultDate: endEl.value || null,
       onChange: function(selectedDates, dateStr) {
         const dbDate = toDbDate(dateStr)
