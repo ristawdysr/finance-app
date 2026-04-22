@@ -506,6 +506,7 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
 
     if (toggleBtn) {
       toggleBtn.classList.toggle("hidden", !canManage)
+      toggleBtn.classList.toggle("inline-flex", canManage)
     }
 
     if (!canManage && formWrapper) {
@@ -735,6 +736,7 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
     const companyEl = el("companyTitle")
     if (companyEl) companyEl.innerText = config.companyName
 
+    applyPenyusutanAccess()
     initYearFilter()
     initFlatpickr()
     initHargaFormatter()

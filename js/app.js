@@ -344,9 +344,6 @@ window.handleNotificationOpen = async function(notificationId) {
   const row = notificationRows.find(x => String(x.id) === String(notificationId))
   if (!row) return
 
-  await markNotificationAsRead(notificationId)
-  renderNotificationDrawerList()
-  await loadNotificationCount()
   closeNotificationDrawer()
   await goToNotificationTarget(row)
 }
