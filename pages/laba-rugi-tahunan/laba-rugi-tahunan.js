@@ -218,7 +218,7 @@ function sumRows(rows) {
 function renderSectionHeader(title) {
   return `
     <tr>
-      <td colspan="2" class="pt-3 pb-1 font-bold text-slate-900">
+      <td colspan="2" class="pt-1 pb-0 font-bold text-slate-900">
         ${escapeHtml(title)}
       </td>
     </tr>
@@ -249,7 +249,7 @@ function renderAccountLine(label, amount, options = {}) {
 function renderBlankRow() {
   return `
     <tr>
-      <td colspan="2" class="py-1">&nbsp;</td>
+      <td colspan="2" class="py-0">&nbsp;</td>
     </tr>
   `
 }
