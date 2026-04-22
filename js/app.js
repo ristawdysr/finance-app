@@ -33,6 +33,7 @@
 let notificationRows = []
 let notificationFilter = "all"
 let notificationSearch = ""
+let bellNudgeInterval = null
 
 function formatNotificationTime(value) {
   if (!value) return "-"
@@ -485,6 +486,38 @@ async function renderCompanyChoicesInApp() {
   bindAppCompanyButtons()
 }
 
+function triggerBellNudge() {
+  const desktopBell = document.getElementById("notificationBellBtn")
+  const mobileBell = document.getElementById("mobileNotificationBellBtn")
+
+  if (desktopBell) {
+    desktopBell.classList.remove("bell-nudge")
+    void desktopBell.offsetWidth
+    desktopBell.classList.add("bell-nudge")
+  }
+
+  if (mobileBell) {
+    mobileBell.classList.remove("bell-nudge")
+    void mobileBell.offsetWidth
+    mobileBell.classList.add("bell-nudge")
+  }
+}
+
+function updateBellNudgeLoop(unreadCount) {
+  if (bellNudgeInterval) {
+    clearInterval(bellNudgeInterval)
+    bellNudgeInterval = null
+  }
+
+  if (Number(unreadCount || 0) > 0) {
+    triggerBellNudge()
+
+    bellNudgeInterval = setInterval(() => {
+      triggerBellNudge()
+    }, 10000)
+  }
+}
+
 async function loadNotificationCount() {
   if (!canSeeBell()) return
 
@@ -541,6 +574,8 @@ async function loadNotificationCount() {
       mobileBadge.innerText = "0"
     }
   }
+
+  updateBellNudgeLoop(finalCount)
 
   if (window.lucide) {
     lucide.createIcons()
