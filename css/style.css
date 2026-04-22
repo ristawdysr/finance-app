@@ -1566,20 +1566,82 @@ main {
 }
 
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    width: 210mm;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
   body * {
-    visibility: hidden;
+    visibility: hidden !important;
   }
 
   #lrTahunanPrintArea,
   #lrTahunanPrintArea * {
-    visibility: visible;
+    visibility: visible !important;
   }
 
   #lrTahunanPrintArea {
     position: absolute;
     left: 0;
     top: 0;
-    width: 100%;
-    background: #fff;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  #lrTahunanPrintArea .p-8 {
+    padding: 0 !important;
+  }
+
+  #lrTahunanPrintArea .overflow-x-auto {
+    overflow: visible !important;
+  }
+
+  #lrTahunanPrintArea table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: fixed;
+  }
+
+  #lrTahunanPrintArea th,
+  #lrTahunanPrintArea td {
+    font-size: 11px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    word-wrap: break-word;
+  }
+
+  #lrTahunanPrintArea h1 {
+    font-size: 18px !important;
+    margin-bottom: 6px !important;
+  }
+
+  #lrTahunanPrintArea p {
+    margin: 0 !important;
+  }
+
+  #lrTahunanPrintArea tr,
+  #lrTahunanPrintArea td,
+  #lrTahunanPrintArea th {
+    page-break-inside: avoid !important;
+  }
+
+  .no-print {
+    display: none !important;
   }
 }
