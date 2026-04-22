@@ -93,6 +93,7 @@ function initSaldoAwalYearSelect() {
 
   saldoAwalTahunInstance = new TomSelect(el, {
     create: false,
+    controlInput: null,
     placeholder: "Pilih Tahun",
     onChange: function(value) {
       localStorage.setItem("saldoAwalTahun", value)

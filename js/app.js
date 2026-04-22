@@ -455,40 +455,33 @@ async function renderCompanyChoicesInApp() {
   const rows = data || []
   const activeCompanyId = getActiveCompanyId()
 
-  if (!rows.length) {
+  const filteredRows = rows.filter(row => 
+    String(row.company_id) !== String(activeCompanyId)
+  )
+
+  if (!filteredRows.length) {
     listEl.innerHTML = `
       <div class="col-span-full rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center text-slate-500">
-        Belum ada perusahaan
+        Tidak ada perusahaan lain
       </div>
     `
     return
   }
 
-  listEl.innerHTML = rows.map(row => {
-    const isActive = String(row.company_id) === String(activeCompanyId)
-
+  listEl.innerHTML = filteredRows.map(row => {
     return `
       <button
         type="button"
-        class="company-choice rounded-3xl border p-6 text-left transition ${
-          isActive
-            ? "border-blue-300 bg-blue-50 opacity-75 cursor-not-allowed"
-            : "border-slate-200 bg-slate-50 hover:border-blue-300 hover:bg-blue-50"
-        }"
+        class="company-choice rounded-3xl border p-6 text-left transition
+          border-slate-200 bg-slate-50 hover:border-blue-300 hover:bg-blue-50"
         data-company-id="${row.company_id}"
         data-company-name="${row.company_name}"
-        ${isActive ? 'data-active-company="true" disabled' : ""}
       >
         <div class="flex items-start justify-between gap-3">
           <div class="min-w-0">
             <div class="text-lg font-bold text-slate-800">${row.company_name}</div>
             <div class="mt-2 text-sm text-slate-500">${row.company_description || "-"}</div>
           </div>
-          ${
-            isActive
-              ? `<span class="shrink-0 rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">Aktif</span>`
-              : ""
-          }
         </div>
       </button>
     `

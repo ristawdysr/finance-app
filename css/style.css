@@ -317,6 +317,8 @@ main {
   font-family: 'Inter', sans-serif;
   padding: 10px 10px 8px;
   width: 280px;
+  min-width: 280px;
+  overflow: hidden;
 }
 
 .flatpickr-calendar.arrowTop:before,
@@ -1540,5 +1542,34 @@ main {
 @media (min-width: 768px) {
   .mobile-topbar {
     display: none !important;
+  }
+}
+
+#sidebarUserDropdown,
+#mobileSidebarUserDropdown {
+  position: relative;
+  z-index: 50;
+}
+
+.sidebar-shell {
+  overflow: visible;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #lrTahunanPrintArea,
+  #lrTahunanPrintArea * {
+    visibility: visible;
+  }
+
+  #lrTahunanPrintArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #fff;
   }
 }
