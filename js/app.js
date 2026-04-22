@@ -1895,6 +1895,12 @@ async function markNotificationAsRead(notificationId) {
 
   if (error) {
     console.error("MARK NOTIFICATION READ ERROR:", error)
+    return
+  }
+
+  const row = notificationRows.find(x => String(x.id) === String(notificationId))
+  if (row) {
+    row.is_read = true
   }
 }
 

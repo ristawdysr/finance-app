@@ -2,7 +2,10 @@
     const SESSION_KEY = "finance_app_session"
 
     function getSession() {
-      const raw = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY)
+      const raw =
+        localStorage.getItem("finance_app_session") ||
+        sessionStorage.getItem("finance_app_session")
+
       if (!raw) return null
 
       try {
@@ -248,6 +251,7 @@
 
       try {
         const { data, error } = await supabaseClient.rpc("admin_create_app_user", {
+          p_actor_user_id: session.id,
           p_username: username,
           p_password: password,
           p_role: role,
@@ -308,6 +312,7 @@
 
       try {
         const { data, error } = await supabaseClient.rpc("admin_update_app_user", {
+          p_actor_user_id: session.id,
           p_user_id: userId,
           p_role: role,
           p_status: status,
