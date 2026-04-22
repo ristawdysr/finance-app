@@ -1737,54 +1737,78 @@ main {
   break-inside: avoid !important;
 }
 
-.flatpickr-current-month input.cur-year {
-  width: 64px !important;
-  min-width: 64px !important;
-  padding-left: 4px !important;
-}
-
-.flatpickr-current-month .numInputWrapper {
-  width: 64px !important;
-}
-
-.flatpickr-current-month .flatpickr-monthDropdown-months {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  border: 1px solid transparent;
-  background: transparent;
-  color: #3f3f46;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 2px 22px 2px 8px;
-  border-radius: 10px;
-  outline: none;
-  cursor: pointer;
-}
-
-.flatpickr-current-month .flatpickr-monthDropdown-months:hover {
-  background: #f4f4f5;
-}
-
-.flatpickr-current-month .flatpickr-monthDropdown-months:focus {
-  background: #f4f4f5;
-  border-color: #d4d4d8;
-}
-
+/* ===== HEADER BULAN + TAHUN ===== */
 .flatpickr-current-month {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   position: relative;
+  height: 40px;
 }
 
+/* ===== TAHUN ===== */
+.flatpickr-current-month input.cur-year {
+  width: 60px !important;
+  min-width: 60px !important;
+  padding: 0 !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* wrapper angka tahun */
+.flatpickr-current-month .numInputWrapper {
+  width: 60px !important;
+}
+
+/* hilangkan spinner + arrow kecil bawaan tahun */
+.flatpickr-current-month .numInputWrapper span {
+  display: none !important;
+}
+
+/* ===== BULAN (dropdown) ===== */
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+
+  background: #f4f4f5 !important;
+  border: none !important;
+  border-radius: 999px !important;
+
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #3f3f46 !important;
+
+  padding: 4px 26px 4px 12px !important;
+  cursor: pointer;
+
+  background-image: none !important; /* ini penting → hilangkan arrow asli */
+}
+
+/* hover */
+.flatpickr-current-month .flatpickr-monthDropdown-months:hover {
+  background: #e4e4e7 !important;
+}
+
+/* focus */
+.flatpickr-current-month .flatpickr-monthDropdown-months:focus {
+  outline: none !important;
+  background: #e4e4e7 !important;
+}
+
+/* ===== ARROW CUSTOM (yang rapi) ===== */
 .flatpickr-current-month::after {
   content: "";
   position: absolute;
-  right: 52px;
+  left: 118px; /* ini posisi arrow → bisa kamu adjust */
   top: 50%;
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-right: 2px solid #71717a;
   border-bottom: 2px solid #71717a;
-  transform: translateY(-65%) rotate(45deg);
+  transform: translateY(-60%) rotate(45deg);
   pointer-events: none;
 }
