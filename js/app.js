@@ -649,6 +649,7 @@ function initSidebarUserPanel() {
 
       if (isHidden) {
         desktopDropdown.classList.remove("hidden")
+        desktopDropdown.classList.add("is-open")
       }
     }
   }
