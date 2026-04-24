@@ -1,5 +1,7 @@
+const penyusutanLabel = String(localStorage.getItem("menuLabel") || "").toLowerCase()
+
 window.initAkmPenyusutan = window.createPenyusutanPage({
-  jenisAset: "umum",
+  jenisAset: penyusutanLabel.includes("kendaraan") ? "kendaraan" : "inventaris",
   pageTitle: localStorage.getItem("menuLabel") || "Akumulasi Penyusutan",
   companyName: localStorage.getItem("activeCompanyName") || "Nama Perusahaan",
   emptyLabel: localStorage.getItem("menuLabel") || "aset",
