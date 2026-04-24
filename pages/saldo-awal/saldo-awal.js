@@ -352,7 +352,7 @@ async function editSaldoAwal(index) {
   const { error: snapshotError } = await supabaseClient
     .from("saldo_awal_snapshot")
     .upsert(snapshotPayload, {
-      onConflict: "company_id,tahun,coa_id"
+      onConflict: "company_id,tahun,kode_coa"
     })
 
   if (snapshotError) {
