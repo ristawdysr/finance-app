@@ -693,6 +693,7 @@ function initSidebarUserPanel() {
 
   // MOBILE
   if (mobileUserButton && mobileDropdown) {
+    mobileUserButton.parentElement?.classList.add("relative")
     mobileUserButton.onclick = function (e) {
       e.stopPropagation()
 
@@ -702,6 +703,7 @@ function initSidebarUserPanel() {
 
       if (isHidden) {
         mobileDropdown.classList.remove("hidden")
+        mobileDropdown.classList.add("is-open")
       }
     }
   }

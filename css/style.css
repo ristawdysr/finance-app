@@ -1837,3 +1837,15 @@ main {
 #mobileNotificationBellBtn.bell-ring-loud {
   animation: bellRingLoud 1.1s ease;
 }
+
+#mobileSidebarUserDropdown {
+  position: absolute !important;
+  left: 16px !important;
+  right: 16px !important;
+  bottom: 96px !important;
+  top: auto !important;
+  width: auto !important;
+  z-index: 99999 !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
