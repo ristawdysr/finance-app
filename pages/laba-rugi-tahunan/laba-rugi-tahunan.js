@@ -499,7 +499,7 @@ function handleLRTahunanExport(type) {
   closeLRTahunanExportMenu()
 
   if (type === "print") {
-    window.print()
+    printLRTahunan()
     return
   }
 
@@ -527,4 +527,18 @@ function handleLRTahunanOutsideClick(event) {
 function initLRTahunanExportDropdown() {
   document.removeEventListener("click", handleLRTahunanOutsideClick)
   document.addEventListener("click", handleLRTahunanOutsideClick)
+}
+
+function printLRTahunan() {
+  document.body.classList.add("print-lr-tahunan")
+
+  const cleanup = () => {
+    document.body.classList.remove("print-lr-tahunan")
+    window.removeEventListener("afterprint", cleanup)
+  }
+
+  window.addEventListener("afterprint", cleanup)
+  window.print()
+
+  setTimeout(cleanup, 1000)
 }

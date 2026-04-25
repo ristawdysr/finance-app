@@ -406,7 +406,7 @@ async function exportNeracaTahunanPDF() {
   document.body.appendChild(wrapper)
 
   const opt = {
-    margin: [6, 6, 6, 6],
+    margin: [4, 6, 4, 6],
     filename: "Neraca-Tahunan.pdf",
     pagebreak: { mode: ["avoid-all", "legacy"] },
     image: { type: "jpeg", quality: 0.98 },
@@ -426,6 +426,11 @@ async function exportNeracaTahunanPDF() {
   }
 
   try {
+    clone.style.minHeight = "0"
+    clone.style.height = "auto"
+
+    const inner = clone.querySelector(".p-8")
+    if (inner) inner.style.padding = "0"
     await html2pdf().set(opt).from(clone).save()
   } catch (err) {
     console.error("EXPORT NERACA PDF ERROR:", err)
