@@ -607,86 +607,6 @@ span.flatpickr-weekday {
   }
 }
 
-/* Print LR Tahunan */
-@media print {
-  html,
-  body {
-    height: auto !important;
-    overflow: visible !important;
-    background: #fff !important;
-  }
-
-  .no-print,
-  aside,
-  #page-title-wrap,
-  #page-loader {
-    display: none !important;
-  }
-
-  .flex.h-screen,
-  .h-screen,
-  main,
-  #content,
-  #lrTahunanPrintArea {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-
-  main {
-    display: block !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    background: #fff !important;
-  }
-
-  #content {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  #lrTahunanPrintArea {
-    box-shadow: none !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    width: 190mm !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    page-break-inside: auto !important;
-    break-inside: auto !important;
-  }
-
-  table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-  }
-
-  thead {
-    display: table-header-group;
-  }
-
-  tfoot {
-    display: table-footer-group;
-  }
-
-  tr {
-    page-break-inside: auto !important;
-    break-inside: auto !important;
-  }
-
-  td,
-  th {
-    page-break-inside: auto !important;
-    break-inside: auto !important;
-  }
-
-  @page {
-    size: A4 portrait;
-    margin: 10mm;
-  }
-}
-
 .export-dropdown-item {
   width: 100%;
   text-align: left;
@@ -699,157 +619,6 @@ span.flatpickr-weekday {
 
 .export-dropdown-item:hover {
   background: #f8fafc;
-}
-
-@media print {
-  @page {
-    size: A4 landscape;
-    margin: 6mm;
-  }
-
-  html,
-  body {
-    height: auto !important;
-    overflow: visible !important;
-    background: #fff !important;
-  }
-
-  .no-print,
-  aside,
-  #page-title-wrap,
-  #page-loader {
-    display: none !important;
-  }
-
-  .flex.h-screen,
-  .h-screen,
-  main,
-  #content,
-  #neracaTahunanPrintArea {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-
-  main {
-    display: block !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    background: #fff !important;
-  }
-
-  #content {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  #neracaTahunanPrintArea {
-    width: 285mm !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-  }
-
-  #neracaTahunanPrintArea .p-8 {
-    padding: 0 !important;
-  }
-
-  /* PENTING: paksa tetap kanan-kiri */
-  #neracaTahunanGrid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 18mm !important;
-    align-items: start !important;
-  }
-
-  #neracaTahunanGrid > div {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  #neracaTahunanPrintArea h1 {
-    font-size: 18px !important;
-    line-height: 1.2 !important;
-    margin-bottom: 2px !important;
-  }
-
-  #neracaTahunanPrintArea .text-2xl {
-    font-size: 18px !important;
-  }
-
-  #neracaTahunanPrintArea .mb-8 {
-    margin-bottom: 10px !important;
-  }
-
-  #neracaTahunanPrintArea .mt-3 {
-    margin-top: 4px !important;
-  }
-
-  #neracaTahunanPrintArea .pt-4,
-  #neracaTahunanPrintArea .pt-5 {
-    padding-top: 6px !important;
-  }
-
-  #neracaTahunanPrintArea .pb-2 {
-    padding-bottom: 3px !important;
-  }
-
-  #neracaTahunanPrintArea .py-1 {
-    padding-top: 1px !important;
-    padding-bottom: 1px !important;
-  }
-
-  #neracaTahunanPrintArea .py-2 {
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
-  }
-
-  #neracaTahunanPrintArea table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-  }
-
-  #neracaTahunanPrintArea .min-w-\[180px\] {
-    min-width: 120px !important;
-  }
-
-  #neracaTahunanPrintArea tr,
-  #neracaTahunanPrintArea td,
-  #neracaTahunanPrintArea th {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-  #neracaTahunanPrintArea h1 {
-    font-size: 22px !important;
-    line-height: 1.3 !important;
-    margin-bottom: 4px !important;
-  }
-
-  #neracaTahunanPrintArea .text-2xl {
-    font-size: 20px !important;
-  }
-
-  #neracaTahunanPrintArea .text-sm {
-    font-size: 13px !important;
-    line-height: 1.4 !important;
-  }
-
-  #neracaTahunanPrintArea td,
-  #neracaTahunanPrintArea th {
-    font-size: 13px !important;
-    line-height: 1.4 !important;
-  }
-  #neracaTahunanPrintArea .font-semibold {
-    font-weight: 600 !important;
-  }
-
-  #neracaTahunanPrintArea .font-bold {
-    font-weight: 700 !important;
-  }
-  
 }
 
 /* =========================
@@ -1565,104 +1334,6 @@ main {
   overflow: visible;
 }
 
-@media print {
-  @page {
-    size: A4 portrait;
-    margin: 2mm 6mm 4mm 6mm;
-  }
-
-  html,
-  body {
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #fff !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  body * {
-    visibility: hidden !important;
-  }
-
-  #lrTahunanPrintArea,
-  #lrTahunanPrintArea * {
-    visibility: visible !important;
-  }
-
-  #lrTahunanPrintArea {
-    position: static !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #fff !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-  }
-
-  #lrTahunanPrintArea .p-8 {
-    padding: 0 !important;
-  }
-
-  #lrTahunanPrintArea .text-center {
-    margin-top: 0 !important;
-    margin-bottom: 6px !important;
-    padding-top: 0 !important;
-  }
-
-  #lrTahunanPrintArea h1 {
-    font-size: 24px !important;
-    line-height: 1.1 !important;
-    margin: 0 !important;
-  }
-
-  #lrTahunanPrintArea .inline-block {
-    margin-top: 4px !important;
-    padding: 4px 16px !important;
-    font-size: 13px !important;
-    line-height: 1.1 !important;
-  }
-
-  #lrTahunanPrintArea p {
-    margin: 4px 0 0 0 !important;
-    font-size: 14px !important;
-    line-height: 1.2 !important;
-  }
-
-  #lrTahunanPrintArea table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    table-layout: fixed !important;
-    margin-top: 0 !important;
-  }
-
-  #lrTahunanPrintArea thead th {
-    font-size: 12.5px !important;
-    padding-top: 1px !important;
-    padding-bottom: 3px !important;
-  }
-
-  #lrTahunanPrintArea tbody td {
-    font-size: 12.5px !important;
-    line-height: 1.25 !important;
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
-    vertical-align: top !important;
-  }
-
-  #lrTahunanPrintArea tr {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-
-  .no-print {
-    display: none !important;
-  }
-}
-
 #lrTahunanPrintArea.pdf-export-mode {
   width: 190mm !important;
   min-width: 0 !important;
@@ -1851,57 +1522,49 @@ main {
 }
 
 @media print {
-  body.print-neraca-tahunan * {
+  html.print-neraca-tahunan body * {
     visibility: hidden !important;
   }
 
-  body.print-neraca-tahunan #neracaTahunanPrintArea,
-  body.print-neraca-tahunan #neracaTahunanPrintArea * {
+  html.print-neraca-tahunan #neracaTahunanPrintArea,
+  html.print-neraca-tahunan #neracaTahunanPrintArea * {
     visibility: visible !important;
   }
 
-  body.print-neraca-tahunan #neracaTahunanPrintArea {
+  html.print-neraca-tahunan #neracaTahunanPrintArea {
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
-    width: 100% !important;
+    width: 285mm !important;
     min-width: 0 !important;
-    max-width: 100% !important;
+    max-width: 285mm !important;
     margin: 0 !important;
     padding: 0 !important;
-    background: #fff !important;
     border: 0 !important;
     box-shadow: none !important;
     overflow: visible !important;
   }
 
-  body.print-neraca-tahunan #neracaTahunanPrintArea .p-8 {
+  html.print-neraca-tahunan #neracaTahunanPrintArea .p-8 {
     padding: 0 !important;
   }
 
-  body.print-neraca-tahunan #neracaTahunanGrid {
+  html.print-neraca-tahunan #neracaTahunanGrid {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 18mm !important;
+    gap: 16mm !important;
   }
 
-  @page {
-    size: A4 landscape;
-    margin: 6mm;
-  }
-}
-
-@media print {
-  body.print-lr-tahunan * {
+  html.print-lr-tahunan body * {
     visibility: hidden !important;
   }
 
-  body.print-lr-tahunan #lrTahunanPrintArea,
-  body.print-lr-tahunan #lrTahunanPrintArea * {
+  html.print-lr-tahunan #lrTahunanPrintArea,
+  html.print-lr-tahunan #lrTahunanPrintArea * {
     visibility: visible !important;
   }
 
-  body.print-lr-tahunan #lrTahunanPrintArea {
+  html.print-lr-tahunan #lrTahunanPrintArea {
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
@@ -1910,28 +1573,31 @@ main {
     max-width: 190mm !important;
     margin: 0 !important;
     padding: 0 !important;
-    background: #fff !important;
     border: 0 !important;
     box-shadow: none !important;
     overflow: visible !important;
   }
+}
 
-  body.print-lr-tahunan #lrTahunanPrintArea .p-8 {
-    padding: 0 !important;
-  }
+#neracaTahunanPrintArea.pdf-export-mode {
+  width: 277mm !important;
+  min-width: 0 !important;
+  max-width: 277mm !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  background: #fff !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
 
-  body.print-lr-tahunan #lrTahunanPrintArea table {
-    width: 100% !important;
-    table-layout: fixed !important;
-  }
+#neracaTahunanPrintArea.pdf-export-mode .p-8 {
+  padding: 0 !important;
+}
 
-  body.print-lr-tahunan {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  @page {
-    size: A4 portrait;
-    margin: 6mm;
-  }
+#neracaTahunanPrintArea.pdf-export-mode #neracaTahunanGrid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 14mm !important;
 }

@@ -530,15 +530,20 @@ function initLRTahunanExportDropdown() {
 }
 
 function printLRTahunan() {
-  document.body.classList.add("print-lr-tahunan")
+  const style = document.createElement("style")
+  style.id = "print-page-style"
+  style.innerHTML = "@page { size: A4 portrait; margin: 6mm; }"
+  document.head.appendChild(style)
+
+  document.documentElement.classList.add("print-lr-tahunan")
 
   const cleanup = () => {
-    document.body.classList.remove("print-lr-tahunan")
+    document.documentElement.classList.remove("print-lr-tahunan")
+    style.remove()
     window.removeEventListener("afterprint", cleanup)
   }
 
   window.addEventListener("afterprint", cleanup)
   window.print()
-
   setTimeout(cleanup, 1000)
 }
