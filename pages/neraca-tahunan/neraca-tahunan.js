@@ -386,15 +386,15 @@ async function exportNeracaTahunanPDF() {
   wrapper.style.position = "fixed"
   wrapper.style.left = "-99999px"
   wrapper.style.top = "0"
-  wrapper.style.width = "297mm"
+  wrapper.style.width = "285mm"
   wrapper.style.background = "#fff"
   wrapper.style.zIndex = "-1"
 
   const clone = source.cloneNode(true)
   clone.classList.add("pdf-export-mode")
-  clone.style.width = "277mm"
+  clone.style.width = "100%"
   clone.style.minWidth = "0"
-  clone.style.maxWidth = "277mm"
+  clone.style.maxWidth = "100%"
   clone.style.margin = "0 auto"
   clone.style.background = "#fff"
   clone.style.border = "0"
@@ -408,7 +408,7 @@ async function exportNeracaTahunanPDF() {
   const opt = {
     margin: [6, 6, 6, 6],
     filename: "Neraca-Tahunan.pdf",
-    pagebreak: { mode: ["avoid-all", "css"] },
+    pagebreak: { mode: ["avoid-all", "legacy"] },
     image: { type: "jpeg", quality: 0.98 },
     html2canvas: {
       scale: 2,
@@ -663,5 +663,15 @@ async function loadNeracaTahunan() {
 }
 
 function printNeracaTahunan() {
+  document.body.classList.add("print-neraca-tahunan")
+
+  const cleanup = () => {
+    document.body.classList.remove("print-neraca-tahunan")
+    window.removeEventListener("afterprint", cleanup)
+  }
+
+  window.addEventListener("afterprint", cleanup)
   window.print()
+
+  setTimeout(cleanup, 1000)
 }
