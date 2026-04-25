@@ -432,5 +432,95 @@
       <div class="notif-empty">Loading...</div>
     </div>
   </aside>
+  <!-- MODAL TAMBAH COMPANY -->
+  <div id="addCompanyModal" class="hidden fixed inset-0 z-[10002]">
+    <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="w-full max-w-2xl rounded-3xl bg-white shadow-2xl border border-slate-200 overflow-hidden">
+        <div class="px-8 py-6 border-b border-slate-200 bg-gradient-to-r from-blue-50 to-white">
+          <h2 class="text-2xl font-bold text-slate-900">Tambah Company</h2>
+          <p class="mt-1 text-sm text-slate-500">Buat company baru untuk aplikasi.</p>
+        </div>
+
+        <div class="p-8 space-y-5">
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Kode Company</label>
+            <input id="addCompanyCode" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100" placeholder="contoh: indo-kreatif">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Nama Company</label>
+            <input id="addCompanyName" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Deskripsi</label>
+            <textarea id="addCompanyDesc" class="min-h-[120px] w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none resize-y focus:border-blue-500 focus:ring-4 focus:ring-blue-100"></textarea>
+          </div>
+        </div>
+
+        <div class="px-8 py-5 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+          <button type="button" onclick="closeAddCompanyModal()" class="rounded-2xl bg-slate-200 px-5 py-3 font-semibold text-slate-700 hover:bg-slate-300">
+            Batal
+          </button>
+          <button type="button" onclick="saveNewCompany()" class="rounded-2xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 shadow-sm">
+            Simpan Company
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL KELOLA COMPANY -->
+  <div id="manageCompanyModal" class="hidden fixed inset-0 z-[10002]">
+    <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="w-full max-w-3xl rounded-3xl bg-white shadow-2xl border border-slate-200 overflow-hidden">
+        <div class="px-8 py-6 border-b border-slate-200 bg-gradient-to-r from-blue-50 to-white">
+          <h2 class="text-2xl font-bold text-slate-900">Kelola Company</h2>
+          <p class="mt-1 text-sm text-slate-500">Edit informasi company atau hapus permanen.</p>
+        </div>
+
+        <div class="p-8 space-y-5">
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Pilih Company</label>
+            <select id="manageCompanyId" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"></select>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Nama Company</label>
+            <input id="manageCompanyName" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Deskripsi</label>
+            <textarea id="manageCompanyDesc" class="min-h-[130px] w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none resize-y focus:border-blue-500 focus:ring-4 focus:ring-blue-100"></textarea>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">Status</label>
+            <select id="manageCompanyStatus" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="px-8 py-5 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+          <button type="button" onclick="closeManageCompanyModal()" class="rounded-2xl bg-slate-200 px-5 py-3 font-semibold text-slate-700 hover:bg-slate-300">
+            Tutup
+          </button>
+          <button type="button" onclick="deleteManagedCompany()" class="rounded-2xl bg-red-600 px-5 py-3 font-semibold text-white hover:bg-red-700 shadow-sm">
+            Hapus Company
+          </button>
+          <button type="button" onclick="saveManagedCompany()" class="rounded-2xl bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700 shadow-sm">
+            Simpan Perubahan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>  
 </body>
 </html>

@@ -730,96 +730,7 @@ function initMasterCompanyActionsInApp() {
         modal.classList.remove("flex")
       }
 
-      const { value: formValues } = await Swal.fire({
-        title: "Tambah Company",
-        html: `
-          <div style="text-align:left; margin-top:8px;">
-
-            <div style="display:grid; grid-template-columns:140px 1fr; gap:12px; align-items:center; margin-bottom:14px;">
-              <label for="swal_company_code" style="font-size:13px; font-weight:600; color:#334155;">
-                Kode Company
-              </label>
-              <input
-                id="swal_company_code"
-                class="swal2-input"
-                style="margin:0; width:100%;"
-                placeholder="contoh: indo-kreatif"
-              >
-            </div>
-
-            <div style="display:grid; grid-template-columns:140px 1fr; gap:12px; align-items:center; margin-bottom:14px;">
-              <label for="swal_company_name" style="font-size:13px; font-weight:600; color:#334155;">
-                Nama Company
-              </label>
-              <input
-                id="swal_company_name"
-                class="swal2-input"
-                style="margin:0; width:100%;"
-              >
-            </div>
-
-            <div style="display:grid; grid-template-columns:140px 1fr; gap:12px; align-items:start;">
-              <label for="swal_company_desc" style="font-size:13px; font-weight:600; color:#334155; padding-top:12px;">
-                Deskripsi
-              </label>
-              <textarea
-                id="swal_company_desc"
-                class="swal2-textarea"
-                style="margin:0; width:100%; min-height:120px; resize:vertical;"
-              ></textarea>
-            </div>
-
-          </div>
-        `,
-        focusConfirm: false,
-        showCancelButton: true,
-        confirmButtonText: "Simpan",
-        preConfirm: () => {
-          const code = document.getElementById("swal_company_code")?.value?.trim().toLowerCase() || ""
-          const name = document.getElementById("swal_company_name")?.value?.trim() || ""
-          const description = document.getElementById("swal_company_desc")?.value?.trim() || ""
-
-          if (!code || !name) {
-            Swal.showValidationMessage("Kode dan nama company wajib diisi")
-            return false
-          }
-
-          return { code, name, description }
-        }
-      })
-
-      if (!formValues) {
-        if (modal) {
-          modal.classList.remove("hidden")
-          modal.classList.add("flex")
-        }
-        return
-      }
-
-      const { data, error } = await supabaseClient.rpc("app_create_company", {
-        p_actor_user_id: user.id,
-        p_code: formValues.code,
-        p_name: formValues.name,
-        p_description: formValues.description || null
-      })
-
-      if (error) {
-        await Swal.fire("Error", error.message || "Gagal tambah company", "error")
-        if (modal) {
-          modal.classList.remove("hidden")
-          modal.classList.add("flex")
-        }
-        return
-      }
-
-      await Swal.fire("Berhasil", data || "Company berhasil dibuat", "success")
-      if (modal) {
-        modal.classList.remove("hidden")
-        modal.classList.add("flex")
-      }
-
-      await renderCompanyChoicesInApp()
-      await loadNotificationCount()
+      openAddCompanyModal()
     }
   }
 
@@ -831,227 +742,56 @@ function initMasterCompanyActionsInApp() {
         modal.classList.remove("flex")
       }
 
-      const companyOptionsHtml = await getCompanyOptionsHtml()
-
-      if (!companyOptionsHtml) {
-        await Swal.fire("Info", "Belum ada company untuk dikelola", "info")
-        if (modal) {
-          modal.classList.remove("hidden")
-          modal.classList.add("flex")
-        }
-        return
-      }
-
-      const result = await Swal.fire({
-        title: "Kelola Company",
-        html: `
-          <div style="text-align:left; margin-top:8px;">
-
-            <div style="display:grid; grid-template-columns:140px 1fr; gap:12px; align-items:center; margin-bottom:14px;">
-              <label for="swal_edit_company_id" style="font-size:13px; font-weight:600; color:#334155;">
-                Pilih Company
-              </label>
-              <select id="swal_edit_company_id" class="swal2-input" style="margin:0; width:100%;">
-                ${companyOptionsHtml}
-              </select>
-            </div>
-
-            <div style="display:grid; grid-template-columns:140px 1fr; gap:12px; align-items:center; margin-bottom:14px;">
-              <label for="swal_edit_company_name" style="font-size:13px; font-weight:600; color:#334155;">
-                Nama Company
-              </label>
-              <input id="swal_edit_company_name" class="swal2-input" style="margin:0; width:100%;">
-            </div>
-
-            <div style="display:grid; grid-template-columns:140px 1fr; gap:12px; align-items:start; margin-bottom:14px;">
-              <label for="swal_edit_company_desc" style="font-size:13px; font-weight:600; color:#334155; padding-top:12px;">
-                Deskripsi
-              </label>
-              <textarea id="swal_edit_company_desc" class="swal2-textarea" style="margin:0; width:100%; min-height:120px; resize:vertical;"></textarea>
-            </div>
-
-            <div style="display:grid; grid-template-columns:140px 1fr; gap:12px; align-items:center;">
-              <label for="swal_edit_company_status" style="font-size:13px; font-weight:600; color:#334155;">
-                Status
-              </label>
-              <select id="swal_edit_company_status" class="swal2-input" style="margin:0; width:100%;">
-                <option value="active">active</option>
-                <option value="inactive">inactive</option>
-              </select>
-            </div>
-
-          </div>
-        `,
-        width: 760,
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Simpan Perubahan",
-        denyButtonText: "Hapus Company",
-        denyButtonColor: "#dc2626",
-        cancelButtonText: "Tutup",
-        didOpen: async () => {
-          const selectEl = document.getElementById("swal_edit_company_id")
-          const nameEl = document.getElementById("swal_edit_company_name")
-          const descEl = document.getElementById("swal_edit_company_desc")
-          const statusEl = document.getElementById("swal_edit_company_status")
-
-          async function fillCompanyDetail(companyId) {
-            if (!companyId) return
-
-            const { data, error } = await supabaseClient
-              .from("companies")
-              .select("id, code, name, description, status")
-              .eq("id", companyId)
-              .single()
-
-            if (error) {
-              console.error("LOAD COMPANY DETAIL ERROR:", error)
-              return
-            }
-
-            if (nameEl) nameEl.value = data?.name || ""
-            if (descEl) descEl.value = data?.description || ""
-            if (statusEl) statusEl.value = data?.status || "active"
-          }
-
-          if (selectEl) {
-            await fillCompanyDetail(selectEl.value)
-            selectEl.onchange = async function () {
-              await fillCompanyDetail(this.value)
-            }
-          }
-        },
-        preConfirm: () => {
-          const companyId = document.getElementById("swal_edit_company_id")?.value || ""
-          const name = document.getElementById("swal_edit_company_name")?.value?.trim() || ""
-          const description = document.getElementById("swal_edit_company_desc")?.value?.trim() || ""
-          const status = document.getElementById("swal_edit_company_status")?.value || "active"
-
-          if (!companyId) {
-            Swal.showValidationMessage("Pilih company terlebih dahulu")
-            return false
-          }
-
-          if (!name) {
-            Swal.showValidationMessage("Nama company wajib diisi")
-            return false
-          }
-
-          return { companyId, name, description, status }
-        }
-      })
-
-      if (result.isConfirmed) {
-        const formValues = result.value
-        const { data: currentCompany, error: currentCompanyError } = await supabaseClient
-          .from("companies")
-          .select("code")
-          .eq("id", formValues.companyId)
-          .single()
-
-        if (currentCompanyError) {
-          await Swal.fire("Error", currentCompanyError.message || "Gagal mengambil data company", "error")
-        } else {
-          const { data, error } = await supabaseClient.rpc("app_update_company", {
-            p_actor_user_id: user.id,
-            p_company_id: formValues.companyId,
-            p_code: currentCompany.code,
-            p_name: formValues.name,
-            p_description: formValues.description || null,
-            p_status: formValues.status
-          })
-
-          if (error) {
-            await Swal.fire("Error", error.message || "Gagal update company", "error")
-          } else {
-            await Swal.fire("Berhasil", data || "Company berhasil diupdate", "success")
-          }
-        }
-      }
-
-      if (result.isDenied) {
-        const deleteOptionsHtml = await getCompanyOptionsHtml()
-
-        const deleteResult = await Swal.fire({
-          title: "Hapus Company",
-          html: `
-            <div style="text-align:left;">
-
-              <div style="display:grid; grid-template-columns:140px 1fr; gap:12px; align-items:center; margin-bottom:14px;">
-                <label for="swal_delete_company_id" style="font-size:13px; font-weight:600; color:#334155;">
-                  Pilih Company
-                </label>
-                <select id="swal_delete_company_id" class="swal2-input" style="margin:0; width:100%;">
-                  ${deleteOptionsHtml}
-                </select>
-              </div>
-
-              <div style="padding:12px 14px; border:1px solid #fecaca; background:#fef2f2; border-radius:12px; color:#991b1b; font-size:13px; margin-bottom:14px;">
-                Semua data yang berkaitan dengan company ini akan ikut terhapus permanen.
-              </div>
-
-              <div style="display:grid; grid-template-columns:140px 1fr; gap:12px; align-items:center;">
-                <label for="swal_delete_confirm" style="font-size:13px; font-weight:600; color:#991b1b;">
-                  Ketik Konfirmasi
-                </label>
-                <input
-                  id="swal_delete_confirm"
-                  class="swal2-input"
-                  style="margin:0; width:100%;"
-                  placeholder="HAPUS PERMANEN"
-                >
-              </div>
-
-            </div>
-          `,
-          width: 760,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Hapus Permanen",
-          confirmButtonColor: "#dc2626",
-          cancelButtonText: "Batal",
-          preConfirm: () => {
-            const companyId = document.getElementById("swal_delete_company_id")?.value || ""
-            const confirmText = document.getElementById("swal_delete_confirm")?.value?.trim() || ""
-
-            if (!companyId) {
-              Swal.showValidationMessage("Pilih company terlebih dahulu")
-              return false
-            }
-
-            if (confirmText !== "HAPUS PERMANEN") {
-              Swal.showValidationMessage("Ketik persis: HAPUS PERMANEN")
-              return false
-            }
-
-            return { companyId, confirmText }
-          }
-        })
-
-        if (deleteResult.isConfirmed) {
-          const { data, error } = await supabaseClient.rpc("app_delete_company", {
-            p_actor_user_id: user.id,
-            p_company_id: deleteResult.value.companyId,
-            p_confirmation_text: deleteResult.value.confirmText
-          })
-
-          if (error) {
-            await Swal.fire("Error", error.message || "Gagal hapus company", "error")
-          } else {
-            await Swal.fire("Berhasil", data || "Company berhasil dihapus permanen", "success")
-          }
-        }
-      }
-
-      if (modal) {
-        modal.classList.remove("hidden")
-        modal.classList.add("flex")
-      }
-
-      await renderCompanyChoicesInApp()
-      await loadNotificationCount()
+      await openManageCompanyModal()
     }
   }
+}
+
+function openAddCompanyModal() {
+  document.getElementById("addCompanyCode").value = ""
+  document.getElementById("addCompanyName").value = ""
+  document.getElementById("addCompanyDesc").value = ""
+
+  document.getElementById("addCompanyModal")?.classList.remove("hidden")
+}
+
+function closeAddCompanyModal() {
+  document.getElementById("addCompanyModal")?.classList.add("hidden")
+
+  const modal = document.getElementById("companyModal")
+  if (modal) {
+    modal.classList.remove("hidden")
+    modal.classList.add("flex")
+  }
+}
+
+async function saveNewCompany() {
+  const user = getSessionUser()
+  const code = document.getElementById("addCompanyCode")?.value?.trim().toLowerCase() || ""
+  const name = document.getElementById("addCompanyName")?.value?.trim() || ""
+  const description = document.getElementById("addCompanyDesc")?.value?.trim() || ""
+
+  if (!code || !name) {
+    Swal.fire("Error", "Kode dan nama company wajib diisi", "error")
+    return
+  }
+
+  const { data, error } = await supabaseClient.rpc("app_create_company", {
+    p_actor_user_id: user.id,
+    p_code: code,
+    p_name: name,
+    p_description: description || null
+  })
+
+  if (error) {
+    Swal.fire("Error", error.message || "Gagal tambah company", "error")
+    return
+  }
+
+  await Swal.fire("Berhasil", data || "Company berhasil dibuat", "success")
+  closeAddCompanyModal()
+  await renderCompanyChoicesInApp()
+  await loadNotificationCount()
 }
 
 async function getCompanyOptionsHtml() {
