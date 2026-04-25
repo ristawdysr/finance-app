@@ -521,6 +521,56 @@
         </div>
       </div>
     </div>
+  </div>
+  <!-- MODAL HAPUS COMPANY -->
+  <div id="deleteCompanyModal" class="hidden fixed inset-0 z-[10003]">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="w-full max-w-lg rounded-3xl bg-white shadow-2xl border border-red-200 overflow-hidden">
+        <div class="px-7 py-6 bg-red-50 border-b border-red-100">
+          <h2 class="text-2xl font-bold text-red-700">Hapus Company?</h2>
+          <p class="mt-1 text-sm text-red-600">
+            Semua data company ini akan ikut terhapus permanen.
+          </p>
+        </div>
+
+        <div class="p-7 space-y-5">
+          <div class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            Tindakan ini tidak bisa dibatalkan. Ketik <b>HAPUS PERMANEN</b> untuk melanjutkan.
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-slate-700">
+              Konfirmasi
+            </label>
+            <input
+              id="deleteCompanyConfirmInput"
+              class="w-full rounded-2xl border border-red-300 px-4 py-3 outline-none focus:border-red-500 focus:ring-4 focus:ring-red-100"
+              placeholder="HAPUS PERMANEN"
+            >
+          </div>
+        </div>
+
+        <div class="px-7 py-5 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+          <button
+            type="button"
+            onclick="closeDeleteCompanyModal()"
+            class="rounded-2xl bg-slate-200 px-5 py-3 font-semibold text-slate-700 hover:bg-slate-300"
+          >
+            Batal
+          </button>
+
+          <button
+            type="button"
+            onclick="confirmDeleteManagedCompany()"
+            class="rounded-2xl bg-red-600 px-5 py-3 font-semibold text-white hover:bg-red-700 shadow-sm"
+          >
+            Hapus Permanen
+          </button>
+        </div>
+      </div>
+    </div>
   </div>  
 </body>
 </html>

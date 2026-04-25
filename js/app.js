@@ -719,31 +719,39 @@ function initMasterCompanyActionsInApp() {
 
   const isMasterUser = String(user?.role || "").toLowerCase() === "master"
   wrap.classList.toggle("hidden", !isMasterUser)
-
   if (!isMasterUser) return
 
-  if (btnTambah) {
-    btnTambah.onclick = async function () {
-      const modal = document.getElementById("companyModal")
-      if (modal) {
-        modal.classList.add("hidden")
-        modal.classList.remove("flex")
-      }
+  if (btnTambah) btnTambah.onclick = openAddCompanyModal
+  if (btnEdit) btnEdit.onclick = openManageCompanyModal
+}
 
-      openAddCompanyModal()
-    }
+function companyToast(message, type = "success") {
+  const el = document.getElementById("companyToast")
+  if (!el) {
+    alert(message)
+    return
   }
 
-  if (btnEdit) {
-    btnEdit.onclick = async function () {
-      const modal = document.getElementById("companyModal")
-      if (modal) {
-        modal.classList.add("hidden")
-        modal.classList.remove("flex")
-      }
+  el.textContent = message
+  el.className = "fixed top-5 right-5 z-[10010] rounded-2xl px-5 py-4 text-sm font-semibold shadow-2xl"
+  el.classList.add(type === "error" ? "bg-red-600" : "bg-emerald-600", "text-white")
+  el.classList.remove("hidden")
+  setTimeout(() => el.classList.add("hidden"), 2400)
+}
 
-      await openManageCompanyModal()
-    }
+function hideCompanyPickerModal() {
+  const modal = document.getElementById("companyModal")
+  if (modal) {
+    modal.classList.add("hidden")
+    modal.classList.remove("flex")
+  }
+}
+
+function showCompanyPickerModal() {
+  const modal = document.getElementById("companyModal")
+  if (modal) {
+    modal.classList.remove("hidden")
+    modal.classList.add("flex")
   }
 }
 
@@ -751,18 +759,13 @@ function openAddCompanyModal() {
   document.getElementById("addCompanyCode").value = ""
   document.getElementById("addCompanyName").value = ""
   document.getElementById("addCompanyDesc").value = ""
-
+  hideCompanyPickerModal()
   document.getElementById("addCompanyModal")?.classList.remove("hidden")
 }
 
 function closeAddCompanyModal() {
   document.getElementById("addCompanyModal")?.classList.add("hidden")
-
-  const modal = document.getElementById("companyModal")
-  if (modal) {
-    modal.classList.remove("hidden")
-    modal.classList.add("flex")
-  }
+  showCompanyPickerModal()
 }
 
 async function saveNewCompany() {
@@ -771,10 +774,8 @@ async function saveNewCompany() {
   const name = document.getElementById("addCompanyName")?.value?.trim() || ""
   const description = document.getElementById("addCompanyDesc")?.value?.trim() || ""
 
-  if (!code || !name) {
-    Swal.fire("Error", "Kode dan nama company wajib diisi", "error")
-    return
-  }
+  if (!user?.id) return companyToast("Session user tidak ditemukan", "error")
+  if (!code || !name) return companyToast("Kode dan nama company wajib diisi", "error")
 
   const { data, error } = await supabaseClient.rpc("app_create_company", {
     p_actor_user_id: user.id,
@@ -783,16 +784,158 @@ async function saveNewCompany() {
     p_description: description || null
   })
 
-  if (error) {
-    Swal.fire("Error", error.message || "Gagal tambah company", "error")
-    return
-  }
+  if (error) return companyToast(error.message || "Gagal tambah company", "error")
 
-  await Swal.fire("Berhasil", data || "Company berhasil dibuat", "success")
-  closeAddCompanyModal()
+  companyToast(data || "Company berhasil dibuat")
+  document.getElementById("addCompanyModal")?.classList.add("hidden")
+  showCompanyPickerModal()
   await renderCompanyChoicesInApp()
   await loadNotificationCount()
 }
+
+async function openManageCompanyModal() {
+  const user = getSessionUser()
+  const selectEl = document.getElementById("manageCompanyId")
+  const modal = document.getElementById("manageCompanyModal")
+
+  if (!user?.id) return companyToast("Session user tidak ditemukan", "error")
+  if (!selectEl || !modal) return companyToast("Modal Kelola Company belum ada di index.html", "error")
+
+  const { data, error } = await supabaseClient.rpc("app_list_my_companies", {
+    p_user_id: user.id
+  })
+
+  if (error) return companyToast(error.message || "Gagal load company", "error")
+
+  const rows = data || []
+  if (!rows.length) return companyToast("Belum ada company untuk dikelola", "error")
+
+  selectEl.innerHTML = rows.map(row => `
+    <option value="${escapeHtml(row.company_id)}">
+      ${escapeHtml(row.company_name)} ${row.company_status ? `(${escapeHtml(row.company_status)})` : ""}
+    </option>
+  `).join("")
+
+  selectEl.onchange = async function () {
+    await fillManagedCompanyDetail(this.value)
+  }
+
+  hideCompanyPickerModal()
+  modal.classList.remove("hidden")
+  await fillManagedCompanyDetail(selectEl.value)
+}
+
+function closeManageCompanyModal() {
+  document.getElementById("manageCompanyModal")?.classList.add("hidden")
+  showCompanyPickerModal()
+}
+
+async function fillManagedCompanyDetail(companyId) {
+  if (!companyId) return
+
+  const { data, error } = await supabaseClient
+    .from("companies")
+    .select("id, code, name, description, status")
+    .eq("id", companyId)
+    .single()
+
+  if (error) return companyToast(error.message || "Gagal ambil detail company", "error")
+
+  document.getElementById("manageCompanyName").value = data?.name || ""
+  document.getElementById("manageCompanyDesc").value = data?.description || ""
+  document.getElementById("manageCompanyStatus").value = data?.status || "active"
+}
+
+async function saveManagedCompany() {
+  const user = getSessionUser()
+  const companyId = document.getElementById("manageCompanyId")?.value || ""
+  const name = document.getElementById("manageCompanyName")?.value?.trim() || ""
+  const description = document.getElementById("manageCompanyDesc")?.value?.trim() || ""
+  const status = document.getElementById("manageCompanyStatus")?.value || "active"
+
+  if (!user?.id) return companyToast("Session user tidak ditemukan", "error")
+  if (!companyId) return companyToast("Pilih company terlebih dahulu", "error")
+  if (!name) return companyToast("Nama company wajib diisi", "error")
+
+  const { data: currentCompany, error: currentCompanyError } = await supabaseClient
+    .from("companies")
+    .select("code")
+    .eq("id", companyId)
+    .single()
+
+  if (currentCompanyError) return companyToast(currentCompanyError.message || "Gagal mengambil data company", "error")
+
+  const { data, error } = await supabaseClient.rpc("app_update_company", {
+    p_actor_user_id: user.id,
+    p_company_id: companyId,
+    p_code: currentCompany.code,
+    p_name: name,
+    p_description: description || null,
+    p_status: status
+  })
+
+  if (error) return companyToast(error.message || "Gagal update company", "error")
+
+  companyToast(data || "Company berhasil diupdate")
+  document.getElementById("manageCompanyModal")?.classList.add("hidden")
+  showCompanyPickerModal()
+  await renderCompanyChoicesInApp()
+  await loadNotificationCount()
+}
+
+function deleteManagedCompany() {
+  const companyId = document.getElementById("manageCompanyId")?.value || ""
+  if (!companyId) return companyToast("Pilih company terlebih dahulu", "error")
+
+  document.getElementById("deleteCompanyConfirmInput").value = ""
+  document.getElementById("deleteCompanyModal")?.classList.remove("hidden")
+}
+
+function closeDeleteCompanyModal() {
+  document.getElementById("deleteCompanyModal")?.classList.add("hidden")
+}
+
+async function confirmDeleteManagedCompany() {
+  const user = getSessionUser()
+  const companyId = document.getElementById("manageCompanyId")?.value || ""
+  const activeCompanyId = getActiveCompanyId()
+  const confirmText = document.getElementById("deleteCompanyConfirmInput")?.value?.trim() || ""
+
+  if (!user?.id) return companyToast("Session user tidak ditemukan", "error")
+  if (confirmText !== "HAPUS PERMANEN") return companyToast("Ketik persis: HAPUS PERMANEN", "error")
+
+  const { data, error } = await supabaseClient.rpc("app_delete_company", {
+    p_actor_user_id: user.id,
+    p_company_id: companyId,
+    p_confirmation_text: "HAPUS PERMANEN"
+  })
+
+  if (error) return companyToast(error.message || "Gagal hapus company", "error")
+
+  companyToast(data || "Company berhasil dihapus permanen")
+  closeDeleteCompanyModal()
+  document.getElementById("manageCompanyModal")?.classList.add("hidden")
+
+  if (String(companyId) === String(activeCompanyId)) {
+    localStorage.removeItem("finance_app_company")
+    localStorage.removeItem("activeCompanyId")
+    localStorage.removeItem("activeCompanyName")
+    window.location.href = "login.html"
+    return
+  }
+
+  showCompanyPickerModal()
+  await renderCompanyChoicesInApp()
+  await loadNotificationCount()
+}
+
+window.closeAddCompanyModal = closeAddCompanyModal
+window.saveNewCompany = saveNewCompany
+window.closeManageCompanyModal = closeManageCompanyModal
+window.saveManagedCompany = saveManagedCompany
+window.deleteManagedCompany = deleteManagedCompany
+window.closeDeleteCompanyModal = closeDeleteCompanyModal
+window.confirmDeleteManagedCompany = confirmDeleteManagedCompany
 
 async function getCompanyOptionsHtml() {
   const user = getSessionUser()
