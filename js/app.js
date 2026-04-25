@@ -1863,35 +1863,33 @@ function appToast(message, type = "success") {
   const isError = type === "error"
 
   el.innerHTML = `
-    <div class="flex items-center gap-3">
-      <div class="text-xl">
-        ${isError ? "❌" : "✅"}
+    <div class="flex items-center gap-4">
+      <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${isError ? "bg-red-500/20" : "bg-emerald-500/20"}">
+        <span class="text-2xl leading-none">${isError ? "×" : "✓"}</span>
       </div>
+
       <div class="flex-1">
-        ${message}
+        <div class="text-sm font-bold leading-5">
+          ${message}
+        </div>
       </div>
     </div>
   `
 
-  el.className = `
-    fixed top-5 right-5 z-[10010]
-    min-w-[320px] max-w-[420px]
-    px-5 py-4
-    rounded-2xl
-    text-sm font-semibold
-    shadow-2xl
-    text-white
-    transform transition-all duration-300 ease-out
-    ${isError ? "bg-red-600" : "bg-emerald-600"}
-  `
+  el.className = [
+    "hidden fixed top-6 right-6 z-[10010]",
+    "w-[380px] max-w-[calc(100vw-32px)]",
+    "rounded-2xl px-5 py-4",
+    "text-white shadow-2xl",
+    "transition-all duration-300 ease-out",
+    isError ? "bg-red-600" : "bg-emerald-600"
+  ].join(" ")
 
-  // START posisi awal (off-screen)
   el.style.opacity = "0"
-  el.style.transform = "translateX(100%) scale(0.95)"
+  el.style.transform = "translateX(40px) scale(0.96)"
 
   el.classList.remove("hidden")
 
-  // trigger animasi masuk
   requestAnimationFrame(() => {
     el.style.opacity = "1"
     el.style.transform = "translateX(0) scale(1)"
@@ -1900,14 +1898,13 @@ function appToast(message, type = "success") {
   clearTimeout(window.appToastTimer)
 
   window.appToastTimer = setTimeout(() => {
-    // animasi keluar
     el.style.opacity = "0"
-    el.style.transform = "translateX(100%) scale(0.95)"
+    el.style.transform = "translateX(40px) scale(0.96)"
 
     setTimeout(() => {
       el.classList.add("hidden")
     }, 300)
-  }, 2500)
+  }, 2600)
 }
 
 window.appToast = appToast
