@@ -30,7 +30,7 @@
         return true
       }
 
-      Swal.fire("Akses ditolak", "Halaman ini hanya untuk master atau superuser", "error")
+      appToast("Halaman ini hanya untuk master atau superuser", "error")
 
       if (typeof handleMenuClick === "function") {
         handleMenuClick("dashboard")
@@ -48,14 +48,16 @@
       const session = getSession()
 
       if (!session) {
-        Swal.fire("Session habis", "Silakan login kembali", "warning").then(() => {
+        appToast("Session habis, silakan login kembali", "error")
+        setTimeout(() => {
           window.location.href = "login.html"
         })
         return null
       }
 
       if (!["master", "superuser"].includes(session.role)) {
-        Swal.fire("Akses ditolak", "Halaman ini hanya untuk master atau superuser", "error").then(() => {
+        appToast("Halaman ini hanya untuk master atau superuser", "error")
+        setTimeout(() => {
           if (typeof handleMenuClick === "function") {
             handleMenuClick("dashboard")
           } else {
@@ -237,7 +239,7 @@
 
       const session = getSession()
       if (!session?.id) {
-        Swal.fire("Session habis", "Silakan login kembali", "warning")
+        appToast("Session habis, silakan login kembali", "error")
         return
       }
 
@@ -248,7 +250,7 @@
       const btn = document.getElementById("createUserBtn")
 
       if (!username || !password) {
-        Swal.fire("Error", "Username dan password wajib diisi", "error")
+        appToast("Username dan password wajib diisi", "error")
         return
       }
 
@@ -266,12 +268,12 @@
 
         if (error) throw error
 
-        Swal.fire("Berhasil", data || "User berhasil dibuat", "success")
+        appToast(data || "User berhasil dibuat")
         document.getElementById("adminCreateUserForm")?.reset()
         await loadUsers()
       } catch (err) {
         console.error("CREATE USER ERROR:", err)
-        Swal.fire("Error", err.message || "Gagal membuat user", "error")
+        appToast(err.message || "Gagal membuat user", "error")
       } finally {
         btn.disabled = false
         btn.innerText = "Buat User"
@@ -287,11 +289,11 @@
 
         if (error) throw error
 
-        Swal.fire("Berhasil", data || "Approval berhasil diupdate", "success")
+        appToast(data || "Approval berhasil diupdate")
         await loadUsers()
       } catch (err) {
         console.error("APPROVAL ERROR:", err)
-        Swal.fire("Error", err.message || "Gagal update approval", "error")
+        appToast(err.message || "Gagal update approval", "error")
       }
     }
 
@@ -303,18 +305,18 @@
 
         if (error) throw error
 
-        Swal.fire("Berhasil", data || "User berhasil dihapus", "success")
+        appToast(data || "User berhasil dihapus")
         await loadUsers()
       } catch (err) {
         console.error("DELETE USER ERROR:", err)
-        Swal.fire("Error", err.message || "Gagal menghapus user", "error")
+        appToast(err.message || "Gagal menghapus user", "error")
       }
     }
 
     async function saveUserChanges(userId) {
       const session = getSession()
       if (!session?.id) {
-        Swal.fire("Session habis", "Silakan login kembali", "warning")
+        appToast("Session habis, silakan login kembali", "error")
         return
       }
 
@@ -333,11 +335,11 @@
 
         if (error) throw error
 
-        Swal.fire("Berhasil", data || "Data user berhasil diupdate", "success")
+        appToast(data || "Data user berhasil diupdate")
         await loadUsers()
       } catch (err) {
         console.error("SAVE USER ERROR:", err)
-        Swal.fire("Error", err.message || "Gagal menyimpan perubahan user", "error")
+        appToast(err.message || "Gagal menyimpan perubahan user", "error")
       }
     }
 

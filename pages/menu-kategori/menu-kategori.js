@@ -109,7 +109,7 @@ function getLampiranPreviewHtml(row) {
 
 function previewLampiran(url) {
   if (!url) {
-    Swal.fire("Error", "Lampiran tidak ditemukan", "error")
+    appToast("Lampiran tidak ditemukan", "error")
     return
   }
 

@@ -12,7 +12,7 @@ function ensureCanInputJurnal() {
   ).toLowerCase()
 
   if (!["master", "superuser", "editor"].includes(role)) {
-    Swal.fire("Akses ditolak", "Role ini tidak boleh input jurnal", "error")
+    appToast("Role ini tidak boleh input jurnal", "error")
     if (typeof handleMenuClick === "function") {
       handleMenuClick("dashboard")
     }
@@ -145,7 +145,7 @@ async function initJurnal() {
 
   const companyId = localStorage.getItem("activeCompanyId") || ""
   if (!companyId) {
-    Swal.fire("Error", "Company aktif belum dipilih", "error")
+    appToast("Company aktif belum dipilih", "error")
     return
   }
 
@@ -165,13 +165,13 @@ async function initJurnal() {
 
   if (coaRes.error) {
     console.error("COA error:", coaRes.error)
-    Swal.fire("Error", coaRes.error.message, "error")
+    appToast(coaRes.error.message || "Gagal load COA", "error")
     return
   }
 
   if (vendorRes.error) {
     console.error("Vendor error:", vendorRes.error)
-    Swal.fire("Error", vendorRes.error.message, "error")
+    appToast(vendorRes.error.message || "Gagal load vendor", "error")
     return
   }
 
@@ -278,12 +278,12 @@ function addItem() {
   const vendorId = String(document.getElementById("vendor").value || "")
 
   if (!tanggal) {
-    Swal.fire("Error", "Tanggal wajib diisi", "error")
+    appToast("Tanggal wajib diisi", "error")
     return
   }
 
   if (!coaId || !nominal || nominal <= 0 || !tipe) {
-    Swal.fire("Error", "Lengkapi Kode COA, Nominal, dan Tipe", "error")
+    appToast("Lengkapi Kode COA, Nominal, dan Tipe", "error")
     return
   }
 
@@ -291,7 +291,7 @@ function addItem() {
   const vendor = vendors.find(v => String(v.id) === vendorId)
 
   if (!coa) {
-    Swal.fire("Error", "COA tidak ditemukan", "error")
+    appToast("COA tidak ditemukan", "error")
     return
   }
 
@@ -310,13 +310,8 @@ function addItem() {
   if (editingIndex !== null) {
     items[editingIndex] = payload
 
-    Swal.fire({
-      icon: "success",
-      title: "Berhasil",
-      text: "Baris jurnal berhasil diupdate",
-      timer: 1200,
-      showConfirmButton: false
-    })
+    appToast("Baris jurnal berhasil diupdate")
+
   } else {
     items.push(payload)
   }
@@ -394,13 +389,7 @@ async function removeItem(index) {
 
   render()
 
-  Swal.fire({
-    icon: "success",
-    title: "Terhapus",
-    text: "Baris jurnal berhasil dihapus",
-    timer: 1200,
-    showConfirmButton: false
-  })
+  appToast("Baris jurnal berhasil dihapus")
 }
 
 function updateSaveButton(isBalanced, hasItems) {
@@ -569,12 +558,12 @@ async function saveJurnal() {
   }
 
   if (!items.length) {
-    Swal.fire("Error", "Belum ada detail jurnal", "error")
+    appToast("Belum ada detail jurnal", "error")
     return
   }
 
   if (d !== k) {
-    Swal.fire("Error", "Jurnal tidak balance", "error")
+    appToast("Jurnal tidak balance", "error")
     return
   }
 
@@ -630,7 +619,7 @@ async function saveJurnal() {
   }
 
   if (failedRows.length > 0) {
-    await Swal.fire("Error", failedRows.join("<br>"), "error")
+    appToast(failedRows.join(", "), "error")
     return
   }
 
@@ -639,5 +628,5 @@ async function saveJurnal() {
   clearDetailForm()
   render()
 
-  await Swal.fire("Success", `${successCount} baris jurnal berhasil disimpan`, "success")
+  appToast(`${successCount} baris jurnal berhasil disimpan`)
 }

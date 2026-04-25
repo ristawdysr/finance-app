@@ -130,7 +130,7 @@
     const loginBtn = document.getElementById("loginBtn")
 
     if (!username || !password) {
-      Swal.fire("Error", "Username dan password wajib diisi", "error")
+      appToast("Username dan password wajib diisi", "error")
       return
     }
 
@@ -150,7 +150,7 @@
 
       if (!user) {
         hideLoginLoader()
-        Swal.fire("Login gagal", "Username / password salah atau akun belum disetujui", "error")
+        appToast("Username / password salah atau akun belum disetujui", "error")
         return
       }
 
@@ -160,7 +160,7 @@
     } catch (err) {
       console.error("LOGIN ERROR:", err)
       hideLoginLoader()
-      Swal.fire("Error", err.message || "Gagal login", "error")
+      appToast(err.message || "Gagal login", "error")
     } finally {
       loginBtn.disabled = false
       loginBtn.innerText = "Login"
@@ -176,17 +176,17 @@
     const registerBtn = document.getElementById("registerBtn")
 
     if (!username || !password || !passwordConfirm) {
-      Swal.fire("Error", "Semua field pendaftaran wajib diisi", "error")
+      appToast("Semua field pendaftaran wajib diisi", "error")
       return
     }
 
     if (password.length < 4) {
-      Swal.fire("Error", "Password minimal 4 karakter", "error")
+      appToast("Password minimal 4 karakter", "error")
       return
     }
 
     if (password !== passwordConfirm) {
-      Swal.fire("Error", "Konfirmasi password tidak sama", "error")
+      appToast("Konfirmasi password tidak sama", "error")
       return
     }
 
@@ -206,7 +206,7 @@
       closeRegisterOverlay()
     } catch (err) {
       console.error("REGISTER ERROR:", err)
-      Swal.fire("Error", err.message || "Gagal mendaftar", "error")
+      appToast(err.message || "Gagal mendaftar", "error")
     } finally {
       registerBtn.disabled = false
       registerBtn.innerText = "Kirim Pendaftaran"
@@ -300,44 +300,19 @@
 }
 
 function companyToast(message, type = "success") {
-  const isError = type === "error"
+  const el = document.getElementById("companyToast")
 
-  const old = document.getElementById("companyStatusModal")
-  if (old) old.remove()
+  if (!el) {
+    alert(message)
+    return
+  }
 
-  const modal = document.createElement("div")
-  modal.id = "companyStatusModal"
-  modal.className = "fixed inset-0 z-[10020] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm px-4"
+  el.textContent = message
+  el.className = "fixed top-5 right-5 z-[10010] rounded-2xl px-5 py-4 text-sm font-semibold shadow-2xl"
+  el.classList.add(type === "error" ? "bg-red-600" : "bg-emerald-600", "text-white")
+  el.classList.remove("hidden")
 
-  modal.innerHTML = `
-    <div class="w-full max-w-sm rounded-3xl bg-white p-7 text-center shadow-2xl border border-slate-200">
-      <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full ${
-        isError ? "bg-red-100 text-red-600" : "bg-emerald-100 text-emerald-600"
-      }">
-        <div class="text-4xl font-bold">${isError ? "!" : "✓"}</div>
-      </div>
-
-      <h3 class="text-xl font-bold ${isError ? "text-red-700" : "text-slate-900"}">
-        ${isError ? "Gagal" : "Berhasil"}
-      </h3>
-
-      <p class="mt-2 text-sm text-slate-600">
-        ${message}
-      </p>
-
-      <button
-        type="button"
-        onclick="document.getElementById('companyStatusModal')?.remove()"
-        class="mt-6 w-full rounded-2xl ${
-          isError ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"
-        } px-5 py-3 font-semibold text-white"
-      >
-        OK
-      </button>
-    </div>
-  `
-
-  document.body.appendChild(modal)
+  setTimeout(() => el.classList.add("hidden"), 2400)
 }
 
 function hideCompanyPickerModal() {

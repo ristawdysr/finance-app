@@ -97,7 +97,7 @@ function ensureMasterDataAccess() {
       return true
     }
 
-    Swal.fire("Akses ditolak", "Halaman ini hanya untuk master atau superuser", "error")
+    appToast("Halaman ini hanya untuk master atau superuser", "error")
 
     if (typeof handleMenuClick === "function") {
       handleMenuClick("dashboard")
@@ -276,7 +276,7 @@ function syncVendorCheckAll() {
 
 async function deleteSelectedVendor() {
   if (!selectedVendorIds.size) {
-    Swal.fire("Info", "Pilih vendor yang ingin dihapus", "info")
+    appToast("Pilih vendor yang ingin dihapus", "info")
     return
   }
 
@@ -298,13 +298,13 @@ async function deleteSelectedVendor() {
     .in("id", Array.from(selectedVendorIds))
 
   if (error) {
-    Swal.fire("Error", error.message || "Gagal hapus vendor", "error")
+    appToast(error.message || "Gagal hapus vendor", "error")
     return
   }
 
   selectedVendorIds.clear()
   await loadVendor()
-  Swal.fire("Success", "Vendor terpilih berhasil dihapus", "success")
+  appToast("Vendor terpilih berhasil dihapus")
 }
 
 async function saveVendor() {
@@ -358,7 +358,7 @@ async function saveVendor() {
   }
 
   if (error) {
-    Swal.fire("Error", error.message || "Gagal simpan vendor", "error")
+    appToast(error.message || "Gagal simpan vendor", "error")
     return
   }
 
@@ -367,7 +367,7 @@ async function saveVendor() {
   document.getElementById("deskripsi").value = ""
 
   await loadVendor()
-  Swal.fire("Success", "Data vendor berhasil disimpan", "success")
+  appToast("Data vendor berhasil disimpan")
 }
 
 async function editVendor(rowId) {

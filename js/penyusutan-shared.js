@@ -562,14 +562,14 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
 
   async function saveData() {
     if (!canManagePenyusutan()) {
-      Swal.fire("Akses ditolak", "Viewer tidak boleh input atau mengubah aset", "error")
+      appToast("Viewer tidak boleh input atau mengubah aset", "error")
       return
 }
     const payload = getFormPayload()
     const errorText = validatePayload(payload)
 
     if (errorText) {
-      Swal.fire("Error", errorText, "error")
+      appToast(errorText, "error")
       return
     }
 
@@ -587,17 +587,11 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
     }
 
     if (result.error) {
-      Swal.fire("Error", result.error.message, "error")
+      appToast(result.error.message || "Gagal simpan data", "error")
       return
     }
 
-    Swal.fire({
-      icon: "success",
-      title: "Berhasil",
-      text: state.editingId ? "Data aset berhasil diupdate" : "Data aset berhasil disimpan",
-      timer: 1400,
-      showConfirmButton: false
-    })
+    appToast(state.editingId ? "Data aset berhasil diupdate" : "Data aset berhasil disimpan")
 
     resetForm()
     await loadData()
@@ -606,7 +600,7 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
   async function loadForEdit(id) {
 
     if (!canManagePenyusutan()) {
-      Swal.fire("Akses ditolak", "Viewer tidak boleh mengedit aset", "error")
+      appToast("Viewer tidak boleh mengedit aset", "error")
       return
     }
     const { data, error } = await supabaseClient
@@ -618,7 +612,7 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
       .maybeSingle()
 
     if (error || !data) {
-      Swal.fire("Error", error?.message || "Data tidak ditemukan", "error")
+      appToast(error?.message || "Data tidak ditemukan", "error")
       return
     }
 
@@ -639,7 +633,7 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
 
   async function removeData(id) {
     if (!canManagePenyusutan()) {
-      Swal.fire("Akses ditolak", "Viewer tidak boleh menghapus aset", "error")
+      appToast("Viewer tidak boleh menghapus aset", "error")
       return
     }
     const confirmDelete = await Swal.fire({
@@ -664,17 +658,11 @@ window.createPenyusutanPage = function createPenyusutanPage(config) {
       .eq("company_id", getActiveCompanyId())
 
     if (error) {
-      Swal.fire("Error", error.message, "error")
+      appToast(error.message || "Gagal hapus data", "error")
       return
     }
 
-    Swal.fire({
-      icon: "success",
-      title: "Terhapus",
-      text: "Data aset berhasil dihapus",
-      timer: 1200,
-      showConfirmButton: false
-    })
+    appToast("Data aset berhasil dihapus")
 
     await loadData()
   }

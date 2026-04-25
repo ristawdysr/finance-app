@@ -144,7 +144,7 @@ async function toggleNotificationStar(notificationId) {
     .eq("id", notificationId)
 
   if (error) {
-    Swal.fire("Error", error.message || "Gagal update favorit", "error")
+    appToast(error.message || "Gagal update favorit", "error")
     return
   }
 
@@ -176,7 +176,7 @@ async function deleteNotification(notificationId) {
     .eq("id", notificationId)
 
   if (error) {
-    Swal.fire("Error", error.message || "Gagal hapus notifikasi", "error")
+    appToast(error.message || "Gagal hapus notifikasi", "error")
     return
   }
 
@@ -312,7 +312,7 @@ async function goToNotificationTarget(notification) {
       .maybeSingle()
 
     if (error || !data) {
-      Swal.fire("Info", `Akun ${target.targetName} tidak ditemukan`, "info")
+      appToast(`Akun ${target.targetName} tidak ditemukan`, "info")
       return
     }
 
@@ -992,12 +992,12 @@ async function submitChangePassword(event) {
   const newPassword = document.getElementById("changePasswordInput")?.value?.trim() || ""
 
   if (!user?.id) {
-    Swal.fire("Error", "Session user tidak ditemukan", "error")
+    appToast("Session user tidak ditemukan", "error")
     return
   }
 
   if (newPassword.length < 6) {
-    Swal.fire("Error", "Password minimal 6 karakter", "error")
+    appToast("Password minimal 6 karakter", "error")
     return
   }
 
@@ -1007,11 +1007,11 @@ async function submitChangePassword(event) {
   })
 
   if (error) {
-    Swal.fire("Error", error.message || "Gagal ganti password", "error")
+    appToast(error.message || "Gagal ganti password", "error")
     return
   }
 
-  Swal.fire("Berhasil", data || "Password berhasil diganti", "success")
+  appToast(data || "Password berhasil diganti")
   document.getElementById("changePasswordForm")?.reset()
   closeChangePasswordModal()
 }
@@ -1736,7 +1736,7 @@ async function goToNotificationTarget(notification) {
     }
 
     if (!data) {
-      Swal.fire("Info", `Akun ${target.targetName} tidak ditemukan`, "info")
+      appToast(`Akun ${target.targetName} tidak ditemukan`, "info")
       return
     }
 
@@ -1803,7 +1803,7 @@ async function openNotificationPanel() {
   const { data, error } = await query
 
   if (error) {
-    Swal.fire("Error", error.message || "Gagal load notifikasi", "error")
+    appToast(error.message || "Gagal load notifikasi", "error")
     return
   }
 
@@ -1851,3 +1851,24 @@ function initNotificationButtons() {
     }
   }
 }
+
+function appToast(message, type = "success") {
+  const el = document.getElementById("appToast")
+
+  if (!el) {
+    alert(message)
+    return
+  }
+
+  el.textContent = message
+  el.className = "fixed top-5 right-5 z-[10010] rounded-2xl px-5 py-4 text-sm font-semibold shadow-2xl"
+  el.classList.add(type === "error" ? "bg-red-600" : "bg-emerald-600", "text-white")
+  el.classList.remove("hidden")
+
+  clearTimeout(window.appToastTimer)
+  window.appToastTimer = setTimeout(() => {
+    el.classList.add("hidden")
+  }, 2400)
+}
+
+window.appToast = appToast

@@ -33,7 +33,7 @@ function ensureMasterDataAccess() {
       return true
     }
 
-    Swal.fire("Akses ditolak", "Halaman ini hanya untuk master atau superuser", "error")
+    appToast("Halaman ini hanya untuk master atau superuser", "error")
 
     if (typeof handleMenuClick === "function") {
       handleMenuClick("dashboard")
@@ -233,7 +233,7 @@ async function editSaldoAwal(index) {
   const companyId = getActiveCompanyId()
 
   if (!companyId) {
-    Swal.fire("Error", "Company aktif belum dipilih", "error")
+    appToast("Company aktif belum dipilih", "error")
     return
   }
   const row = saldoAwalRows[index]
@@ -335,7 +335,7 @@ async function editSaldoAwal(index) {
   }
 
   if (error) {
-    Swal.fire("Error", error.message, "error")
+    appToast(error.message, "error")
     return
   }
 
@@ -356,17 +356,11 @@ async function editSaldoAwal(index) {
     })
 
   if (snapshotError) {
-    Swal.fire("Error", snapshotError.message, "error")
+    appToast(snapshotError.message, "error")
     return
   }
 
-  Swal.fire({
-    icon: "success",
-    title: "Berhasil",
-    text: "Saldo awal berhasil disimpan",
-    timer: 1200,
-    showConfirmButton: false
-  })
+  appToast("Saldo awal berhasil disimpan")
 
   await loadSaldoAwal()
 }

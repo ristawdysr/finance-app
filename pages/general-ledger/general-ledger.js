@@ -224,7 +224,7 @@
 
   async function deleteSelectedGeneralLedgerRows() {
     if (!selectedGeneralLedgerIds.size) {
-      Swal.fire("Info", "Pilih data yang ingin dihapus", "info")
+      appToast("Pilih data yang ingin dihapus", "error")
       return
     }
 
@@ -248,18 +248,18 @@
       .in("id", ids)
 
     if (error) {
-      Swal.fire("Error", error.message || "Gagal hapus data", "error")
+      appToast(error.message || "Gagal hapus data", "error")
       return
     }
 
     selectedGeneralLedgerIds.clear()
-    Swal.fire("Berhasil", "Data terpilih berhasil dihapus", "success")
+    appToast("Data terpilih berhasil dihapus")
     await loadGeneralLedger()
   }
 
   async function deleteAllGeneralLedgerRows() {
     if (!generalLedgerRows.length) {
-      Swal.fire("Info", "Tidak ada data untuk dihapus", "info")
+      appToast("Tidak ada data untuk dihapus", "error")
       return
     }
 
@@ -288,12 +288,12 @@
       .lte("tanggal", `${tahun}-12-31`)
 
     if (error) {
-      Swal.fire("Error", error.message || "Gagal hapus semua data", "error")
+      appToast(error.message || "Gagal hapus semua data", "error")
       return
     }
 
     selectedGeneralLedgerIds.clear()
-    Swal.fire("Berhasil", `Semua jurnal tahun ${tahun} berhasil dihapus`, "success")
+    appToast(`Semua jurnal tahun ${tahun} berhasil dihapus`)
     await loadGeneralLedger()
   }
 

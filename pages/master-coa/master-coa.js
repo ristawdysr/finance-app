@@ -53,7 +53,7 @@ function ensureMasterDataAccess() {
       return true
     }
 
-    Swal.fire("Akses ditolak", "Halaman ini hanya untuk master atau superuser", "error")
+    appToast("Halaman ini hanya untuk master atau superuser", "error")
 
     if (typeof handleMenuClick === "function") {
       handleMenuClick("dashboard")
@@ -130,7 +130,7 @@ async function loadCOA() {
         <td colspan="8" class="text-center text-red-500 py-6">${escapeHtml(error.message)}</td>
       </tr>
     `
-    Swal.fire("Error", error.message, "error")
+    appToast(error.message, "error")
     return
   }
 
@@ -265,7 +265,7 @@ function syncCOACheckAll() {
 
 async function deleteSelectedCOA() {
   if (!selectedCoaIds.size) {
-    Swal.fire("Info", "Pilih data COA yang ingin dihapus", "info")
+    appToast("Pilih data COA yang ingin dihapus", "info")
     return
   }
 
@@ -287,13 +287,13 @@ async function deleteSelectedCOA() {
     .in("id", Array.from(selectedCoaIds))
 
   if (error) {
-    Swal.fire("Error", error.message || "Gagal hapus COA", "error")
+    appToast(error.message || "Gagal hapus COA", "error")
     return
   }
 
   selectedCoaIds.clear()
   await loadCOA()
-  Swal.fire("Success", "COA terpilih berhasil dihapus", "success")
+  appToast("COA terpilih berhasil dihapus")
 }
 
 async function saveCOA() {
@@ -351,13 +351,13 @@ async function saveCOA() {
   }
 
   if (error) {
-    Swal.fire("Error", error.message, "error")
+    appToast(error.message, "error")
     return
   }
 
   resetCOAForm()
   await loadCOA()
-  Swal.fire("Success", "Data COA berhasil disimpan", "success")
+  appToast("Data COA berhasil disimpan")
 }
 
 async function editCOA(id) {
@@ -368,7 +368,7 @@ async function editCOA(id) {
     .single()
 
   if (error) {
-    Swal.fire("Error", error.message, "error")
+    appToast(error.message || "Terjadi kesalahan", "error")
     return
   }
 
