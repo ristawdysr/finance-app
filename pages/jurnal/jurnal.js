@@ -553,7 +553,7 @@ async function saveJurnal() {
   const k = items.reduce((a, b) => a + Number(b.kredit || 0), 0)
 
   if (!companyId) {
-    Swal.fire("Error", "Company aktif belum dipilih", "error")
+    appToast("Company aktif belum dipilih", "error")
     return
   }
 
@@ -619,6 +619,7 @@ async function saveJurnal() {
   }
 
   if (failedRows.length > 0) {
+    Swal.close()
     appToast(failedRows.join(", "), "error")
     return
   }
@@ -628,5 +629,6 @@ async function saveJurnal() {
   clearDetailForm()
   render()
 
+  Swal.close()
   appToast(`${successCount} baris jurnal berhasil disimpan`)
 }

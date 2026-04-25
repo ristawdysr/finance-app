@@ -3,6 +3,17 @@ let coaPreviewData = []
 let saldoNormalInstance = null
 let selectedCoaIds = new Set()
 
+const swalCustom = {
+  customClass: {
+    popup: "rounded-3xl shadow-2xl p-6",
+    title: "text-xl font-bold text-slate-800",
+    htmlContainer: "text-sm text-slate-600",
+    confirmButton: "rounded-2xl bg-red-600 hover:bg-red-700 px-5 py-3 font-semibold text-white",
+    cancelButton: "rounded-2xl bg-slate-200 hover:bg-slate-300 px-5 py-3 font-semibold text-slate-700"
+  },
+  buttonsStyling: false
+}
+
 function updateCOADeleteSelectedVisibility() {
   const btn = document.getElementById("coaDeleteSelectedBtn")
   if (!btn) return
@@ -270,13 +281,18 @@ async function deleteSelectedCOA() {
   }
 
   const result = await Swal.fire({
+    ...swalCustom,
     title: "Hapus COA terpilih?",
-    text: `${selectedCoaIds.size} data COA akan dihapus`,
-    icon: "warning",
+    html: `
+      <div class="text-center">
+        <div class="mb-3 text-4xl">⚠️</div>
+        <div><b>${selectedCoaIds.size}</b> data COA akan dihapus.</div>
+        <div class="mt-2 text-red-600 font-semibold">Tindakan ini tidak bisa dibatalkan.</div>
+      </div>
+    `,
     showCancelButton: true,
     confirmButtonText: "Ya, hapus",
-    cancelButtonText: "Batal",
-    confirmButtonColor: "#dc2626"
+    cancelButtonText: "Batal"
   })
 
   if (!result.isConfirmed) return
@@ -306,12 +322,12 @@ async function saveCOA() {
   const saldo_normal = document.getElementById("saldo_normal").value
 
   if (!companyId) {
-    Swal.fire("Error", "Company aktif belum dipilih", "error")
+    appToast("Company aktif belum dipilih", "error")
     return
   }
 
   if (!kode_akun || !nama_akun || !kategori || !seksi || !laporan || !saldo_normal) {
-    Swal.fire("Error", "Semua field COA wajib diisi", "error")
+    appToast("Semua field COA wajib diisi", "error")
     return
   }
 
@@ -373,8 +389,9 @@ async function editCOA(id) {
   }
 
   const { value: formValues } = await Swal.fire({
-    title: "Edit Master COA",
-    width: 640,
+  ...swalCustom,
+  title: "Edit Master COA",
+    width: 720,
     html: `
       <div style="text-align:left; margin-top:10px;">
         <div style="display:grid;grid-template-columns:140px 1fr;gap:10px 14px;align-items:center">
@@ -605,19 +622,24 @@ async function editCOA(id) {
     .eq("id", id)
 
   if (updateError) {
-    Swal.fire("Error", updateError.message, "error")
+    appToast(updateError.message, "error")
     return
   }
 
   await loadCOA()
-  Swal.fire("Success", "Data COA berhasil diupdate", "success")
+  appToast("Data COA berhasil diupdate")
 }
 
 async function deleteCOA(id) {
   const confirm = await Swal.fire({
+    ...swalCustom,
     title: "Hapus data?",
-    text: "Data COA yang dihapus tidak bisa dikembalikan",
-    icon: "warning",
+    html: `
+      <div class="text-center">
+        <div class="mb-3 text-4xl">⚠️</div>
+        <div>Data COA yang dihapus tidak bisa dikembalikan.</div>
+      </div>
+    `,
     showCancelButton: true,
     confirmButtonText: "Ya, hapus",
     cancelButtonText: "Batal"
@@ -631,7 +653,7 @@ async function deleteCOA(id) {
     .eq("id", id)
 
   if (error) {
-    Swal.fire("Error", error.message, "error")
+    appToast(error.message, "error")
     return
   }
 
@@ -641,7 +663,7 @@ async function deleteCOA(id) {
     await loadKategoriSidebar()
   }
 
-  Swal.fire("Success", "Data COA berhasil dihapus", "success")
+  appToast("Data COA berhasil dihapus")
 }
 
 function resetCOAForm() {
@@ -658,18 +680,12 @@ async function handleUploadCOA(e) {
   if (!file) return
 
   if (typeof XLSX === "undefined") {
-    Swal.fire("Error", "Library Excel belum termuat. Tambahkan script XLSX di index.html", "error")
+    appToast("Library XLSX tidak ditemukan. Pastikan file xlsx.full.min.js sudah dimuat.", "error")
     e.target.value = ""
     return
   }
 
-  Swal.fire({
-    title: "Memproses file Excel...",
-    text: "Mohon tunggu",
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    didOpen: () => Swal.showLoading()
-  })
+  appToast("Membaca file Excel...", "info")
 
   try {
     const data = await file.arrayBuffer()
@@ -678,7 +694,7 @@ async function handleUploadCOA(e) {
     const json = XLSX.utils.sheet_to_json(sheet, { defval: "" })
 
     if (!json.length) {
-      await Swal.fire("Error", "File Excel kosong", "error")
+      appToast("File Excel kosong", "error")
       e.target.value = ""
       return
     }
@@ -754,7 +770,8 @@ async function handleUploadCOA(e) {
     `
 
     const result = await Swal.fire({
-      title: "Preview Import COA",
+    ...swalCustom,
+    title: "Preview Import COA",
       html: previewHtml,
       width: 1200,
       showCancelButton: true,
@@ -767,7 +784,7 @@ async function handleUploadCOA(e) {
     }
   } catch (err) {
     console.error("HANDLE UPLOAD COA ERROR:", err)
-    await Swal.fire("Error", err.message || "Gagal membaca file Excel", "error")
+    appToast("Gagal membaca file Excel: " + err.message, "error")
   } finally {
     e.target.value = ""
   }
@@ -775,23 +792,29 @@ async function handleUploadCOA(e) {
 
 async function importPreviewCOA() {
   if (!coaPreviewData.length) {
-    Swal.fire("Error", "Belum ada data preview", "error")
+    appToast("Belum ada data preview", "error")
     return
   }
 
   const companyId = localStorage.getItem("activeCompanyId") || ""
 
   if (!companyId) {
-    Swal.fire("Error", "Company aktif belum dipilih", "error")
+    appToast("Company aktif belum dipilih", "error")
     return
   }
 
   Swal.fire({
-    title: "Import data COA...",
-    text: "Mohon tunggu, data sedang diproses",
+    ...swalCustom,
+    title: "Import data COA",
+    html: `
+      <div class="flex flex-col items-center gap-3">
+        <div class="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+        <div class="text-sm text-slate-600">Mohon tunggu, data sedang diproses...</div>
+      </div>
+    `,
+    showConfirmButton: false,
     allowOutsideClick: false,
-    allowEscapeKey: false,
-    didOpen: () => Swal.showLoading()
+    allowEscapeKey: false
   })
 
   let successCount = 0
@@ -877,6 +900,7 @@ async function importPreviewCOA() {
   }
 
   await Swal.fire({
+    ...swalCustom,
     title: "Import selesai",
     html: `
       <div style="text-align:left">
