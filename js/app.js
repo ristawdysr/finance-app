@@ -1860,15 +1860,54 @@ function appToast(message, type = "success") {
     return
   }
 
-  el.textContent = message
-  el.className = "fixed top-5 right-5 z-[10010] rounded-2xl px-5 py-4 text-sm font-semibold shadow-2xl"
-  el.classList.add(type === "error" ? "bg-red-600" : "bg-emerald-600", "text-white")
+  const isError = type === "error"
+
+  el.innerHTML = `
+    <div class="flex items-center gap-3">
+      <div class="text-xl">
+        ${isError ? "❌" : "✅"}
+      </div>
+      <div class="flex-1">
+        ${message}
+      </div>
+    </div>
+  `
+
+  el.className = `
+    fixed top-5 right-5 z-[10010]
+    min-w-[320px] max-w-[420px]
+    px-5 py-4
+    rounded-2xl
+    text-sm font-semibold
+    shadow-2xl
+    text-white
+    transform transition-all duration-300 ease-out
+    ${isError ? "bg-red-600" : "bg-emerald-600"}
+  `
+
+  // START posisi awal (off-screen)
+  el.style.opacity = "0"
+  el.style.transform = "translateX(100%) scale(0.95)"
+
   el.classList.remove("hidden")
 
+  // trigger animasi masuk
+  requestAnimationFrame(() => {
+    el.style.opacity = "1"
+    el.style.transform = "translateX(0) scale(1)"
+  })
+
   clearTimeout(window.appToastTimer)
+
   window.appToastTimer = setTimeout(() => {
-    el.classList.add("hidden")
-  }, 2400)
+    // animasi keluar
+    el.style.opacity = "0"
+    el.style.transform = "translateX(100%) scale(0.95)"
+
+    setTimeout(() => {
+      el.classList.add("hidden")
+    }, 300)
+  }, 2500)
 }
 
 window.appToast = appToast
