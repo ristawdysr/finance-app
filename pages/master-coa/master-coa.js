@@ -8,8 +8,9 @@ const swalCustom = {
     popup: "rounded-3xl shadow-2xl p-6",
     title: "text-xl font-bold text-slate-800",
     htmlContainer: "text-sm text-slate-600",
-    confirmButton: "rounded-2xl bg-red-600 hover:bg-red-700 px-5 py-3 font-semibold text-white",
-    cancelButton: "rounded-2xl bg-slate-200 hover:bg-slate-300 px-5 py-3 font-semibold text-slate-700"
+    actions: "flex gap-4 justify-center w-full mt-6",
+    confirmButton: "min-w-[150px] rounded-2xl bg-red-600 hover:bg-red-700 px-8 py-3 font-semibold text-white",
+    cancelButton: "min-w-[150px] rounded-2xl bg-slate-200 hover:bg-slate-300 px-8 py-3 font-semibold text-slate-700"
   },
   buttonsStyling: false
 }
