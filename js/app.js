@@ -1063,26 +1063,99 @@ function buildStaticSidebarMenu(isMobile = false) {
 
   return `
     <ul class="space-y-1">
-      <li class="menu" data-page="dashboard" onclick="handleMenuClick('dashboard', this)">Dashboard</li>
-      ${canJurnal ? `<li class="menu" data-page="jurnal" onclick="handleMenuClick('jurnal', this)">Jurnal</li>` : ""}
-      <li class="menu" data-page="general-ledger" onclick="handleMenuClick('general-ledger', this)">General Ledger</li>
+
+      <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer hover:bg-white/10"
+          data-page="dashboard"
+          onclick="handleMenuClick('dashboard', this)">
+        <i data-lucide="home" class="w-4 h-4"></i>
+        <span>Dashboard</span>
+      </li>
+
+      ${canJurnal ? `
+      <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer hover:bg-white/10"
+          data-page="jurnal"
+          onclick="handleMenuClick('jurnal', this)">
+        <i data-lucide="file-text" class="w-4 h-4"></i>
+        <span>Jurnal</span>
+      </li>
+      ` : ""}
+
+      <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer hover:bg-white/10"
+          data-page="general-ledger"
+          onclick="handleMenuClick('general-ledger', this)">
+        <i data-lucide="book-open" class="w-4 h-4"></i>
+        <span>General Ledger</span>
+      </li>
+
     </ul>
 
     <div class="sidebar-section-title mt-4">Laporan</div>
     <ul class="space-y-1">
-      <li class="menu" data-page="neraca-bulanan" onclick="handleMenuClick('neraca-bulanan', this)">Neraca Bulanan</li>
-      <li class="menu" data-page="laba-rugi-bulanan" onclick="handleMenuClick('laba-rugi-bulanan', this)">Laba Rugi Bulanan</li>
-      <li class="menu" data-page="laba-rugi-tahunan" onclick="handleMenuClick('laba-rugi-tahunan', this)">Laba Rugi Tahunan</li>
-      <li class="menu" data-page="neraca-tahunan" onclick="handleMenuClick('neraca-tahunan', this)">Neraca Tahunan</li>
+
+      <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10"
+          data-page="neraca-bulanan"
+          onclick="handleMenuClick('neraca-bulanan', this)">
+        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+        <span>Neraca Bulanan</span>
+      </li>
+
+      <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10"
+          data-page="laba-rugi-bulanan"
+          onclick="handleMenuClick('laba-rugi-bulanan', this)">
+        <i data-lucide="trending-up" class="w-4 h-4"></i>
+        <span>Laba Rugi Bulanan</span>
+      </li>
+
+      <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10"
+          data-page="laba-rugi-tahunan"
+          onclick="handleMenuClick('laba-rugi-tahunan', this)">
+        <i data-lucide="line-chart" class="w-4 h-4"></i>
+        <span>Laba Rugi Tahunan</span>
+      </li>
+
+      <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10"
+          data-page="neraca-tahunan"
+          onclick="handleMenuClick('neraca-tahunan', this)">
+        <i data-lucide="pie-chart" class="w-4 h-4"></i>
+        <span>Neraca Tahunan</span>
+      </li>
+
     </ul>
 
     ${canMaster ? `
       <div class="sidebar-section-title mt-4">Master Data</div>
       <ul class="space-y-1">
-        <li class="menu" data-page="master-vendor" onclick="handleMenuClick('master-vendor', this)">Master Vendor</li>
-        <li class="menu" data-page="master-coa" onclick="handleMenuClick('master-coa', this)">Master COA</li>
-        <li class="menu" data-page="saldo-awal" onclick="handleMenuClick('saldo-awal', this)">Saldo Awal</li>
-        ${canUsers ? `<li class="menu" data-page="manage-akun" onclick="handleMenuClick('manage-akun', this)">Manage Akun</li>` : ""}
+
+        <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10"
+            data-page="master-vendor"
+            onclick="handleMenuClick('master-vendor', this)">
+          <i data-lucide="users" class="w-4 h-4"></i>
+          <span>Master Vendor</span>
+        </li>
+
+        <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10"
+            data-page="master-coa"
+            onclick="handleMenuClick('master-coa', this)">
+          <i data-lucide="grid-3x3" class="w-4 h-4"></i>
+          <span>Master COA</span>
+        </li>
+
+        <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10"
+            data-page="saldo-awal"
+            onclick="handleMenuClick('saldo-awal', this)">
+          <i data-lucide="database" class="w-4 h-4"></i>
+          <span>Saldo Awal</span>
+        </li>
+
+        ${canUsers ? `
+        <li class="menu flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10"
+            data-page="manage-akun"
+            onclick="handleMenuClick('manage-akun', this)">
+          <i data-lucide="user-cog" class="w-4 h-4"></i>
+          <span>Manage Akun</span>
+        </li>
+        ` : ""}
+
       </ul>
     ` : ""}
 
@@ -1169,6 +1242,10 @@ function renderSidebarContainers() {
 
   if (mobileEl) {
     mobileEl.innerHTML = buildStaticSidebarMenu(true)
+  }
+
+  if (window.lucide) {
+    lucide.createIcons()
   }
 }
 
