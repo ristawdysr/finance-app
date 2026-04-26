@@ -150,7 +150,21 @@
 
       if (!user) {
         hideLoginLoader()
-        appToast("Username / password salah atau akun belum disetujui", "error")
+        appToast("Username atau password salah", "error")
+        return
+      }
+
+      // 🔥 HANDLE STATUS USER
+
+      if (user.approval_status !== "approved") {
+        hideLoginLoader()
+        appToast("Akun belum disetujui oleh admin", "error")
+        return
+      }
+
+      if (user.status !== "active") {
+        hideLoginLoader()
+        appToast("Akun tidak aktif, hubungi admin", "error")
         return
       }
 

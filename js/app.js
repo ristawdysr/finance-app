@@ -1420,6 +1420,7 @@ async function loadKategoriSidebar() {
 
       if (namaAkun && kodeAkun) {
         const exists = grouped[kategori].some(x => x.kode_akun === kodeAkun)
+
         if (!exists) {
           grouped[kategori].push({
             nama_akun: namaAkun,
@@ -1436,6 +1437,11 @@ async function loadKategoriSidebar() {
         `<li class="text-sm text-gray-200 px-2 py-1">Belum ada kategori</li>`,
         `<li class="text-sm text-gray-200 px-2 py-1">Belum ada kategori</li>`
       )
+
+      if (window.lucide) {
+        lucide.createIcons()
+      }
+
       return
     }
 
@@ -1444,9 +1450,17 @@ async function loadKategoriSidebar() {
 
     setKategoriMenuHtml(desktopHtml, mobileHtml)
 
+    if (window.lucide) {
+      lucide.createIcons()
+    }
+
   } catch (err) {
     console.error("LOAD KATEGORI SIDEBAR ERROR:", err)
     setKategoriMenuHtml(`<li class="text-sm text-red-200 px-2 py-1">Error kategori</li>`)
+
+    if (window.lucide) {
+      lucide.createIcons()
+    }
   }
 }
 
@@ -1458,14 +1472,29 @@ function buildKategoriMenuHtml(grouped, isMobile = false) {
     const submenuId = `${prefix}-kategori-${slugify(kategori)}-${index}`
     const akunList = grouped[kategori]
 
+    const kategoriLower = String(kategori || "").toLowerCase()
+
+    const isDepresiasiKategori =
+      kategoriLower.includes("depresiasi") ||
+      kategoriLower.includes("penyusutan")
+
+    const kategoriIcon = isDepresiasiKategori ? "factory" : "folder-kanban"
+
+    const kategoriIconClass = isDepresiasiKategori
+      ? "w-4 h-4 shrink-0 text-purple-300"
+      : "w-4 h-4 shrink-0 text-blue-100/90"
+
     html += `
       <li>
         <div
           onclick="event.stopPropagation(); toggleMenu('${submenuId}')"
-          class="sidebar-category cursor-pointer select-none"
+          class="sidebar-category flex items-center gap-2 cursor-pointer select-none"
         >
-          <span>${escapeHtml(kategori)}</span>
-          <span class="text-blue-100/80 text-xs">▾</span>
+          <i data-lucide="${kategoriIcon}" class="${kategoriIconClass}"></i>
+
+          <span class="truncate">${escapeHtml(kategori)}</span>
+
+          <span class="ml-auto text-blue-100/80 text-xs">▾</span>
         </div>
 
         <ul id="${submenuId}" class="sidebar-submenu hidden space-y-1">
