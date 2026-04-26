@@ -1474,9 +1474,8 @@ function buildKategoriMenuHtml(grouped, isMobile = false) {
 
     const kategoriLower = String(kategori || "").toLowerCase()
 
-    const isDepresiasiKategori =
-      kategoriLower.includes("depresiasi") ||
-      kategoriLower.includes("penyusutan")
+    // Khusus kategori yang namanya mengandung "depresiasi"
+    const isDepresiasiKategori = kategoriLower.includes("depresiasi")
 
     const kategoriIcon = isDepresiasiKategori ? "factory" : "folder-kanban"
 
