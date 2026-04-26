@@ -1971,11 +1971,12 @@ function initNotificationButtons() {
 }
 
 function appToast(message, type = "success") {
-  const el = document.getElementById("appToast")
+  let el = document.getElementById("appToast")
 
   if (!el) {
-    alert(message)
-    return
+    el = document.createElement("div")
+    el.id = "appToast"
+    document.body.appendChild(el)
   }
 
   const isError = type === "error"
@@ -1995,7 +1996,7 @@ function appToast(message, type = "success") {
   `
 
   el.className = [
-    "hidden fixed top-6 right-6 z-[10010]",
+    "fixed top-6 right-6 z-[10010]",
     "w-[380px] max-w-[calc(100vw-32px)]",
     "rounded-2xl px-5 py-4",
     "text-white shadow-2xl",
@@ -2005,8 +2006,6 @@ function appToast(message, type = "success") {
 
   el.style.opacity = "0"
   el.style.transform = "translateX(40px) scale(0.96)"
-
-  el.classList.remove("hidden")
 
   requestAnimationFrame(() => {
     el.style.opacity = "1"

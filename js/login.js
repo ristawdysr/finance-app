@@ -314,19 +314,26 @@
 }
 
 function companyToast(message, type = "success") {
-  const el = document.getElementById("companyToast")
+  let el = document.getElementById("companyToast")
 
   if (!el) {
-    alert(message)
-    return
+    el = document.createElement("div")
+    el.id = "companyToast"
+    document.body.appendChild(el)
   }
 
   el.textContent = message
-  el.className = "fixed top-5 right-5 z-[10010] rounded-2xl px-5 py-4 text-sm font-semibold shadow-2xl"
+  el.className = "fixed top-5 right-5 z-[10010] rounded-2xl px-5 py-4 text-sm font-semibold shadow-2xl transition-all duration-300"
   el.classList.add(type === "error" ? "bg-red-600" : "bg-emerald-600", "text-white")
-  el.classList.remove("hidden")
 
-  setTimeout(() => el.classList.add("hidden"), 2400)
+  el.style.opacity = "1"
+  el.style.transform = "translateX(0)"
+
+  setTimeout(() => {
+    el.style.opacity = "0"
+    el.style.transform = "translateX(40px)"
+    setTimeout(() => el.classList.add("hidden"), 300)
+  }, 2400)
 }
 
 function hideCompanyPickerModal() {
