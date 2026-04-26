@@ -1592,6 +1592,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   appendDebugLog("initMobileSidebar OK")
 
   const lastPage = localStorage.getItem("lastPage") || "dashboard"
+  history.replaceState({ page: lastPage }, "", `#${lastPage}`)
     if (!pageInitMap[lastPage]) {
       localStorage.removeItem("lastPage")
     }
@@ -1707,11 +1708,23 @@ function initMobileSidebar() {
 
 function handleMenuClick(page, el = null) {
   if (el) setSidebarActiveElement(el)
+
   if (typeof window.closeMobileSidebar === "function") {
     window.closeMobileSidebar()
   }
+
+  history.pushState({ page }, "", `#${page}`)
   loadPage(page)
 }
+
+window.addEventListener("popstate", function (event) {
+  const page =
+    event.state?.page ||
+    window.location.hash.replace("#", "") ||
+    "dashboard"
+
+  loadPage(page)
+})
 
 function bindAppCompanyButtons() {
   document.querySelectorAll("#companyChoiceList .company-choice").forEach(btn => {
